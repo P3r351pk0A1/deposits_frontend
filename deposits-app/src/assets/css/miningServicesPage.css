@@ -1,0 +1,28 @@
+.background{
+    background-color: #2A2928;
+    height: 100%;
+}
+
+.MServCards {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: space-between !important ;
+    gap: 10px !important;
+    position: relative !important;
+    width: 100% !important;
+    padding-top: 10px; /* добавлено для смещения всех карточек */
+}
+
+.card_list
+{
+list-style-type: none;
+display: flex;
+flex-direction: row;
+flex-wrap: wrap;
+justify-content: center;
+height:10%;
+width:600px;
+top:100px;
+left: 30%;
+position:absolute;
+}

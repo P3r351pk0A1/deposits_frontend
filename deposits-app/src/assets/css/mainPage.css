@@ -1,0 +1,64 @@
+@font-face {
+    font-family: 'Oswald Reg';
+    src: url('../../assets/OpenSans-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Oswald Bold';
+    src: url('../../assets/OpenSans-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.titleName{
+    margin-top: 1.5em;
+    display: flex;
+    justify-content: center;
+    font-family: 'OpenSans Bold';
+    color: #ECE4D9;
+}
+
+.underTitle {
+    display: flex;
+    justify-content: center;
+    font-family: 'OpenSans Reg';
+    color: #ECE4D9;
+    max-width: 600px;
+    word-break: break-word; 
+    white-space: normal; 
+    text-align: center;
+}
+
+.RowClass{
+    display: flex;
+    justify-content: center;
+}
+
+.homebtn
+{
+background-color:#ffffff;
+color:#000000;
+text-align:left;
+vertical-align:text-top;
+font-size:20px;
+font-family: "Oswald", sans-serif;
+font-optical-sizing: auto;
+font-weight: regular;
+font-style: normal;
+line-height:auto;
+border-style:hidden;
+outline:none;
+width:233px;
+position:absolute;
+top:2%;
+left:2%;
+text-decoration: none;
+}
