@@ -3,7 +3,6 @@ import { FC, useEffect, useState } from 'react'
 import { MiningServicesInfo, getMiningServicesByName } from '../modules/miningServiceApi'
 import { MINING_SERVICES_MOCK } from '../modules/mock'
 
-import NavBar from '../components/NavBar'
 import MiningServiceCard from '../components/miningServiceCard'
 import { Container} from 'react-bootstrap'
 

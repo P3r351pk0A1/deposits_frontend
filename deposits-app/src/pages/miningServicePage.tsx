@@ -4,12 +4,9 @@ import { useParams } from "react-router-dom"
 import { MiningServicesInfo, getMiningServiceById } from '../modules/miningServiceApi'
 import { MINING_SERVICES_MOCK } from '../modules/mock'
 
-import NavBar from '../components/NavBar'
-
-// import '../assets/css/issuePage.css'
 import { BreadCrumbs } from '../components/BreadCrumbs'
 
-const IssuePage: FC = () => {
+const MiningServicePage: FC = () => {
 
     const [mining_service, setMiningService] = useState<MiningServicesInfo>({
         mining_service_id: 0,
@@ -31,21 +28,21 @@ const IssuePage: FC = () => {
             setMiningService(response)
         }).catch(() => {
             let found = false;
-            MINING_SERVICES_MOCK.Services.forEach((m_service) => {
-                if (m_service.mining_service_id === id_numeric)
-                    found = true;
-                    return setMiningService(m_service)
+                MINING_SERVICES_MOCK.Services.forEach((m_service) => {
+                    if (m_service.mining_service_id === id_numeric)
+                        found = true;
+                        return setMiningService(m_service)
+                })
+                if (!found)
+                    setMiningService(MINING_SERVICES_MOCK.Services[0])
             })
-            if (!found)
-                setMiningService(MINING_SERVICES_MOCK.Services[0])
-        })
     }, [])
 
     return (
         <>
             <BreadCrumbs crumbs={[
                 {
-                    label: 'Виды происшествий',
+                    label: 'Виды услуг',
                     path: '/miningServices'
                 },
                 {
@@ -71,4 +68,4 @@ const IssuePage: FC = () => {
     )
 }
 
-export default IssuePage
+export default MiningServicePage

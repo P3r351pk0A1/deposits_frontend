@@ -10,7 +10,7 @@ function App() {
       <Routes>
         <Route path={ROUTES.HOME} index element={<MainPage />} />
         <Route path={ROUTES.MINING_SERVICES} element={<MiningServicesPage />} />
-        <Route path={`${ROUTES.MINING_SERVICES}/:service_id`} element={<MiningServicePage />} />
+        <Route path={`${ROUTES.MINING_SERVICES}/:id`} element={<MiningServicePage />} />
       </Routes>
     </BrowserRouter>
   );
