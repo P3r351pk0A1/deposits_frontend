@@ -5,6 +5,7 @@ export interface MiningServicesInfo {
     long_description: string
     url: string
     price: number
+    id: number
 }
 
 export interface CurMiningOrderInfo {

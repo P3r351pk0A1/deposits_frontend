@@ -14,7 +14,8 @@ const MiningServicePage: FC = () => {
         description: '',
         long_description: '',
         url: '',
-        price: 0
+        price: 0,
+        id: 0
     })
 
     const { id } = useParams()
