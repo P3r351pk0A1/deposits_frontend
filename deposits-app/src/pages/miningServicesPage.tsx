@@ -20,7 +20,9 @@ const MiningServicesPage: FC = () => {
 
     const updateMiningServices = () => {
         setLoading(true)
+        console.log(2)
         getMiningServicesByName(searchMiningService).then((response) => {
+            console.log(1)
             setMiningServices(response.Services)
             setLoading(false)
         }).catch(() => {
@@ -49,11 +51,16 @@ const MiningServicesPage: FC = () => {
     }
 
     useEffect(() => {
-        updateMiningServices()
+        // updateMiningServices()
+        console.log('m')
+        return () => {
+            console.log('dm')
+        }
     }, [])
 
     const handleSearch = () => {
         updateMiningServices()
+        console.log(4)
     }
 
     return (
