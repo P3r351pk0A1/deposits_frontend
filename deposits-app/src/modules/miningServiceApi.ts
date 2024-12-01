@@ -19,13 +19,13 @@ export interface MiningServicesResult {
 }
 
 export const getMiningServicesByName = async (name = ""): Promise<MiningServicesResult> => {
-    return fetch(`http://127.0.0.1:8000/miningServices?name=${name}`).then(
+    return fetch(`/api/miningServices?name=${name}`).then(
         (response) => response.json()
     )
 }
 
 export const getMiningServiceById = async (id: number): Promise<MiningServicesInfo> => {
-    return fetch(`http://127.0.0.1:8000/miningServices/${id}`).then(
+    return fetch(`/api/miningServices/${id}`).then(
         (response) => response.json()
     )
 }

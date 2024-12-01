@@ -12,11 +12,6 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
-      // "/miningServices":{
-      //   target: "http://localhost:8000",
-      //   changeOrigin: true,
-      //   rewrite: (path) => path.replace(/^\/miningServices/, "/miningServices/  "),
-      // }
     }
   },
   plugins: [react()],
