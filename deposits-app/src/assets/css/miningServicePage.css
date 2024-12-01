@@ -1,0 +1,52 @@
+.service-details{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding-left: 0;
+}
+
+.service-img-box{
+    position: relative;
+    width: 20em;
+    height: 20em;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.service-img{
+    position: absolute;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.mservice-long-descr{
+    padding-left: 2rem;
+    max-width: 50rem;
+}
+
+@media (max-width: 1332px) {
+    .mservice-long-descr {
+        max-width: 45rem;
+    }
+}
+
+@media (max-width: 1249px) {
+    .mservice-long-descr {
+        max-width: 40rem;
+    }
+}
+
+@media (max-width: 1175px) {
+    .mservice-long-descr {
+        max-width: 30rem;
+    }
+}
+
+@media (max-width: 1025px) {
+    .mservice-long-descr {
+        max-width: 25rem;
+    }
+}
+
+

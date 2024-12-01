@@ -6,6 +6,7 @@ import { MINING_SERVICES_MOCK } from '../modules/mock'
 
 import { BreadCrumbs } from '../components/BreadCrumbs'
 import NavbarComponent  from '../components/NavBar'
+import '../assets/css/miningServicePage.css'
 
 const MiningServicePage: FC = () => {
 
@@ -55,16 +56,12 @@ const MiningServicePage: FC = () => {
 
             <div className='d-flex flex-column ms-4 content-fluid'>
                <h2 className='text-uppercase'>{mining_service?.name}</h2>
-               <div className='container-fluid mt-3'>
-                    <div className='row'>
-                        <div className='col-3 p-0 shadow shadow-bg'>
-                            <div className='appeal-img-bg'>
-                                <img src={mining_service?.url} className='appeal-img' alt='appeal'></img>
-                            </div>
-                        </div>
-                        <div className='ps-5 col-5 mt-2'>
-                            <p>{mining_service?.long_description}</p>
-                        </div>
+               <div className='service-details container-fluid mt-3'>
+                    <div className='service-img-box '>
+                        <img src={mining_service?.url} className='service-img' alt='service'></img>
+                    </div>
+                    <div className='mservice-long-descr mt-2'>
+                        <p>{mining_service?.long_description}</p>
                     </div>
                </div>
             </div>

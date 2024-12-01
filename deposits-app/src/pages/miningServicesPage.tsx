@@ -73,16 +73,16 @@ const MiningServicesPage: FC = () => {
                             placeholder='Поиск по названию работ'>
                         </InputField>
 
-                            <Container className="d-flex flex-wrap container-fluid g-4 justify-content-center w-100 gap-4 mt-5" style={{ maxWidth: '770px' }}>
-                                <button onClick={scrollLeft} className="carousel-control-prev">‹</button>
+                            <Container className="d-flex flex-wrap container-fluid g-4 justify-content-center w-100 gap-4 mt-5" >
+                                
                                 <div ref={carouselRef} className="d-flex overflow-auto" style={{ maxWidth: '100%' }}>
                                     {mining_services.map((service, index) => (
                                         <div key={`${service.id}-${index}`} className="flex-shrink-0" style={{ height: '400px', minWidth: '250px', maxWidth: '250px', margin: '0 10px' }}>
                                             <MiningServiceCard {...service} />
                                         </div>
                                     ))}
-
                                 </div>
+                                <button onClick={scrollLeft} className="carousel-control-prev">‹</button>
                                 <button onClick={scrollRight} className="carousel-control-next">›</button>
                                 <div style={{ width: '100%', height: '50px', backgroundColor: 'white', marginTop: '-50px' }}></div>
                             </Container>
