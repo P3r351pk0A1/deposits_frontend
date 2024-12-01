@@ -1,8 +1,10 @@
 import { FC } from 'react'
+import NavbarComponent from '../components/NavBar';
 
 const MainPage: FC = () => {
     return (
         <>
+        <NavbarComponent/>
             <div className="container mt-5 w-50">
                 <h3>Разведка месторождений</h3>
                 <p>

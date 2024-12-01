@@ -11,6 +11,7 @@ import '../assets/css/miningServicesPage.css'
 import InputField from '../components/inputField'
 import { BreadCrumbs } from '../components/BreadCrumbs'
 import { ROUTE_LABELS } from '../modules/Routes'
+import NavbarComponent  from '../components/NavBar'
 
 const MiningServicesPage: FC = () => {
 
@@ -61,6 +62,7 @@ const MiningServicesPage: FC = () => {
 
     return (
         <>
+        <NavbarComponent/>
             <BreadCrumbs crumbs={[{label: ROUTE_LABELS.MINING_SERVICES}]}></BreadCrumbs>
                    
                         <InputField

@@ -1,0 +1,15 @@
+{
+    "name": "Deposits",
+    "short_name": "Deposits",
+    "start_url": "/deposits_frontend/",
+    "display": "standalone",
+    "background_color": "#fdfdfd",
+    "theme_color": "#db4938",
+    "orientation": "portrait-primary",
+    "icons": [
+      {
+        "src": "/logo.png",
+        "type": "image/png", "sizes": "225x225"
+      }
+    ]
+  }

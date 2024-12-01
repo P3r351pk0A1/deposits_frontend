@@ -5,6 +5,7 @@ import { MiningServicesInfo, getMiningServiceById } from '../modules/miningServi
 import { MINING_SERVICES_MOCK } from '../modules/mock'
 
 import { BreadCrumbs } from '../components/BreadCrumbs'
+import NavbarComponent  from '../components/NavBar'
 
 const MiningServicePage: FC = () => {
 
@@ -41,6 +42,7 @@ const MiningServicePage: FC = () => {
 
     return (
         <>
+        <NavbarComponent/>
             <BreadCrumbs crumbs={[
                 {
                     label: 'Виды услуг',
@@ -50,6 +52,7 @@ const MiningServicePage: FC = () => {
                     label: mining_service?.name
                 }
             ]}></BreadCrumbs>
+
             <div className='d-flex flex-column ms-4 content-fluid'>
                <h2 className='text-uppercase'>{mining_service?.name}</h2>
                <div className='container-fluid mt-3'>
