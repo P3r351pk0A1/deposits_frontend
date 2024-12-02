@@ -12,7 +12,7 @@ import InputField from '../components/inputField'
 import { BreadCrumbs } from '../components/BreadCrumbs'
 import { ROUTE_LABELS } from '../modules/Routes'
 import NavbarComponent  from '../components/NavBar'
-
+import { SearchProvider } from '../components/inputField'
 const MiningServicesPage: FC = () => {
 
     const [loading, setLoading] = useState(false)
@@ -21,6 +21,7 @@ const MiningServicesPage: FC = () => {
 
     const updateMiningServices = () => {
         setLoading(true)
+        // console.log(searchMiningService)
         getMiningServicesByName(searchMiningService).then((response) => {
             setMiningServices(response.Services)
             setLoading(false)
@@ -49,15 +50,22 @@ const MiningServicesPage: FC = () => {
         }
     }
 
+
+
     useEffect(() => {
         updateMiningServices()
         return () => {
         }
     }, [])
 
-    const handleSearch = () => {
+    useEffect(() => {
         updateMiningServices()
-        console.log(4)
+    }, [searchMiningService])
+
+    const handleSearch = (value: string) => {
+        setSearchMiningService(value)  
+        // console.log(searchMiningService) 
+        updateMiningServices()
     }
 
     return (
@@ -65,13 +73,15 @@ const MiningServicesPage: FC = () => {
         <NavbarComponent/>
             <BreadCrumbs crumbs={[{label: ROUTE_LABELS.MINING_SERVICES}]}></BreadCrumbs>
                    
-                        <InputField
-                            value={searchMiningService} 
-                            setValue={setSearchMiningService} 
-                            onSubmit={handleSearch} 
-                            loading={loading} 
-                            placeholder='Поиск по названию работ'>
-                        </InputField>
+                <SearchProvider>
+                    <InputField 
+                        value={searchMiningService} 
+                        setValue={setSearchMiningService} 
+                        onSubmit={handleSearch} 
+                        loading={loading} 
+                        placeholder="Search Mining Services" 
+                    />
+                </SearchProvider>
 
                             <Container className="d-flex flex-wrap container-fluid g-4 justify-content-center w-100 gap-4 mt-5" >
                                 
