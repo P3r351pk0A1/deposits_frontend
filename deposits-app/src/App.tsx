@@ -2,9 +2,10 @@ import MainPage from './pages/mainPage'
 import { ROUTES } from './modules/Routes'
 import MiningServicesPage from './pages/miningServicesPage'
 import MiningServicePage from './pages/miningServicePage'
+import { invoke } from "@tauri-apps/api/core";
+import React, { useEffect } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-  
-const { invoke } = (window as any).__TAURI__.tauri;
 
 function App() {
   useEffect(() => {
