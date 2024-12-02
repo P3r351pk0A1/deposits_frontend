@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react'
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: "/deposits_frontend",
   server: {
     host: true, // изначально добавил для доступа по локальной сети
     port: 3000,
