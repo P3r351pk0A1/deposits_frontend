@@ -2,9 +2,24 @@ import MainPage from './pages/mainPage'
 import { ROUTES } from './modules/Routes'
 import MiningServicesPage from './pages/miningServicesPage'
 import MiningServicePage from './pages/miningServicePage'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+
+  
+const { invoke } = (window as any).__TAURI__.tauri;
 
 function App() {
+  useEffect(() => {
+    invoke('tauri', {cmd: 'create'})
+    .then((response: any) => console.log(response))
+    .catch((error: any) => console.log(error))
+
+    return () => {
+      invoke('tauri', {cmd: 'close'})
+      .then((response: any) => console.log(response))
+      .catch((error: any) => console.log(error))
+    }
+  }, [])
+
+
   return (
     <BrowserRouter>
       <Routes>
