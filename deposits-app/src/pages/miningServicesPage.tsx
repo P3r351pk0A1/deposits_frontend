@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useEffect, useState} from 'react'
 import { useRef } from 'react'
 
 import { MiningServicesInfo, getMiningServicesByName } from '../modules/miningServiceApi'
@@ -12,7 +12,6 @@ import InputField from '../components/inputField'
 import { BreadCrumbs } from '../components/BreadCrumbs'
 import { ROUTE_LABELS } from '../modules/Routes'
 import NavbarComponent  from '../components/NavBar'
-import { SearchProvider } from '../components/inputField'
 const MiningServicesPage: FC = () => {
 
     const [loading, setLoading] = useState(false)
@@ -21,7 +20,6 @@ const MiningServicesPage: FC = () => {
 
     const updateMiningServices = () => {
         setLoading(true)
-        // console.log(searchMiningService)
         getMiningServicesByName(searchMiningService).then((response) => {
             setMiningServices(response.Services)
             setLoading(false)
@@ -50,41 +48,28 @@ const MiningServicesPage: FC = () => {
         }
     }
 
-
-
     useEffect(() => {
         updateMiningServices()
         return () => {
         }
-    }, [])
-
-    useEffect(() => {
-        updateMiningServices()
     }, [searchMiningService])
 
     const handleSearch = (value: string) => {
         setSearchMiningService(value)  
-        // console.log(searchMiningService) 
-        updateMiningServices()
     }
 
     return (
         <>
         <NavbarComponent/>
             <BreadCrumbs crumbs={[{label: ROUTE_LABELS.MINING_SERVICES}]}></BreadCrumbs>
-                   
-                <SearchProvider>
                     <InputField 
                         value={searchMiningService} 
                         setValue={setSearchMiningService} 
                         onSubmit={handleSearch} 
                         loading={loading} 
-                        placeholder="Search Mining Services" 
+                        placeholder="Поиск горных работ" 
                     />
-                </SearchProvider>
-
                             <Container className="d-flex flex-wrap container-fluid g-4 justify-content-center w-100 gap-4 mt-5" >
-                                
                                 <div ref={carouselRef} className="d-flex overflow-auto" style={{ maxWidth: '100%' }}>
                                     {mining_services.map((service, index) => (
                                         <div key={`${service.id}-${index}`} className="flex-shrink-0" style={{ height: '400px', minWidth: '250px', maxWidth: '250px', margin: '0 10px' }}>
@@ -96,10 +81,6 @@ const MiningServicesPage: FC = () => {
                                 <button onClick={scrollRight} className="carousel-control-next">›</button>
                                 <div style={{ width: '100%', height: '50px', backgroundColor: 'white', marginTop: '-50px' }}></div>
                             </Container>
-                            
-
-
-            
         </>
     )
 }

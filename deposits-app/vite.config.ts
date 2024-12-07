@@ -5,7 +5,7 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   base: "/deposits_frontend",
   server: {
-    host: true, // изначально добавил для доступа по локальной сети
+    host: true, 
     port: 3000,
     proxy: {
       "/api": {
