@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap');
+
+.inputUsDataField{
+    width: 94%;
+    height: 30px;
+    margin: 4px 3%;
+    display: inline-block;
+    border: 2px solid #DA3B3B;
+    box-sizing: border-box;
+    font-family: Oswald;
+}
+
+.inpBox{
+    display: 'flex';
+    flex-direction: column;  
+}
+
+.inpLabel{
+    font-family: Oswald;
+    font-size: 20px;
+    color: #000000;
+    margin: 0px 3%;
+}
+
+.sbmBtn{
+    background-color: #DA3B3B;
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 40%;
+    height: 40px;
+    font-family: Oswald;
+    border-radius: 15px;
+}
+
+.sbmBtn:hover {
+    background-color: #B03030;
+    color: #ffffff;
+    margin-bottom: 20px;
+}

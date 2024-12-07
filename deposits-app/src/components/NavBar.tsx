@@ -16,6 +16,10 @@ const NavbarComponent: FC = () => {
           <Nav className="me-auto">
               <Nav.Link as={Link} to={ROUTES.MINING_SERVICES} className='nav-link navbar-text-main'>Виды услуг</Nav.Link>
           </Nav>
+          <Nav className="ms-auto">
+              <Nav.Link as={Link} to={ROUTES.REGISTRATION} className='nav-link navbar-text-main'>Регистрация</Nav.Link>
+              <Nav.Link as={Link} to={ROUTES.AUTHORISATION} className='nav-link navbar-text-main'>Вход</Nav.Link>
+          </Nav>
           </Navbar.Collapse>
       </Navbar>
   )
