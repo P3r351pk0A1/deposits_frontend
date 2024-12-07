@@ -4,7 +4,7 @@ import MiningServicesPage from './pages/miningServicesPage'
 import MiningServicePage from './pages/miningServicePage'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { invoke } from "@tauri-apps/api/core";
-import React, { useEffect, useReducer } from 'react';
+import { useEffect, useReducer } from 'react';
 import { SearchContext, searchReducer, initialState} from './components/inputField'
 
 function App() {
