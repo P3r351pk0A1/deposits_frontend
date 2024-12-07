@@ -2,12 +2,14 @@ import MainPage from './pages/mainPage'
 import { ROUTES } from './modules/Routes'
 import MiningServicesPage from './pages/miningServicesPage'
 import MiningServicePage from './pages/miningServicePage'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { invoke } from "@tauri-apps/api/core";
-import React, { useEffect } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-
+import React, { useEffect, useReducer } from 'react';
+import { SearchContext, searchReducer, initialState} from './components/inputField'
 
 function App() {
+  const [searchState, searchDispatch] = useReducer(searchReducer, initialState);
+  
   useEffect(() => {
     invoke('tauri', {cmd: 'create'})
     .then((response: any) => console.log(response))
@@ -19,16 +21,18 @@ function App() {
       .catch((error: any) => console.log(error))
     }
   }, [])
-
-
+  
+  
   return (
-    <BrowserRouter>
+    <SearchContext.Provider value = {{ state: searchState, dispatch: searchDispatch }}>
+    <BrowserRouter basename="/deposits_frontend">
       <Routes>
         <Route path={ROUTES.HOME} index element={<MainPage />} />
         <Route path={ROUTES.MINING_SERVICES} element={<MiningServicesPage />} />
         <Route path={`${ROUTES.MINING_SERVICES}/:id`} element={<MiningServicePage />} />
       </Routes>
     </BrowserRouter>
+    </SearchContext.Provider>
   );
 }
 
