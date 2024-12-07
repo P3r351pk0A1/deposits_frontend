@@ -8,8 +8,8 @@
     "orientation": "portrait-primary",
     "icons": [
       {
-      "src": "/deposits_frontend/logo.png",
-      "type": "image/png", "sizes": "50x50"
+      "src": "/deposits-app/logo.png",
+      "type": "image/png", "sizes": "225x225"
       }
     ]
   }
