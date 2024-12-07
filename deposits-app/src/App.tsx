@@ -25,7 +25,7 @@ function App() {
   
   return (
     <SearchContext.Provider value = {{ state: searchState, dispatch: searchDispatch }}>
-    <BrowserRouter basename="/deposits_frontend">
+    <BrowserRouter>
       <Routes>
         <Route path={ROUTES.HOME} index element={<MainPage />} />
         <Route path={ROUTES.MINING_SERVICES} element={<MiningServicesPage />} />
