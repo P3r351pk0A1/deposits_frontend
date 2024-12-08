@@ -76,6 +76,32 @@ export const fetchLK = createAsyncThunk(
     }
 })
 
+export const fetchAddMiningServiceToOrder = createAsyncThunk(
+    'data/fetchAddMiningServiceToOrder',
+    async (id: number) => {
+        try{
+            const response = await api.miningServices.miningServicesCreate2(id.toString())
+            return response.data
+        }
+        catch(error:any){
+            throw new Error(error.response.data.status)
+        }
+    }
+)
+
+export const fetchMiningServicesList = createAsyncThunk(
+    'data/fetchMiningServicesList',
+    async (name: string) => {
+        try{
+            const response = await api.miningServices.miningServicesList({name})
+            return response.data
+        }
+        catch(error:any){
+            throw new Error(error.response.data.status)
+        }
+    }
+)
+
 
 
 const dataSlice = createSlice({
@@ -88,6 +114,10 @@ const dataSlice = createSlice({
         errorBoxText :'',
         LoadingStatus: false,
         user: {} as User,
+        curOrderId: -1,
+        miningServisesInCurOrder: [],
+        searchValue: '',
+        mining_services: [],
     },
     // Редьюсеры в слайсах мутируют состояние и ничего не возвращают наружу
     reducers: {
@@ -103,6 +133,9 @@ const dataSlice = createSlice({
         setUser(state, {payload}){
             state.user = payload
         },
+        setSearchValue(state, {payload}){
+            state.searchValue = payload
+        }
     },
     extraReducers: (builder) => {
         builder.addCase(fetchReg.pending, (state) => {
@@ -159,12 +192,44 @@ const dataSlice = createSlice({
             state.LoadingStatus = false
             state.errorBoxText = action.error.message || 'An unknown error occurred'
         });
+
+        builder.addCase(fetchAddMiningServiceToOrder.pending, (state) => {
+            state.LoadingStatus = true
+        });
+        builder.addCase(fetchAddMiningServiceToOrder.fulfilled, (state, action) => {
+            // state.mining_services =   
+            state.LoadingStatus = false
+            state.errorBoxStatus = false
+        });
+        builder.addCase(fetchAddMiningServiceToOrder.rejected, (state, action) => {
+            state.errorBoxStatus = true
+            state.LoadingStatus = false
+            state.errorBoxText = action.error.message || 'An unknown error occurred'
+        });
+
+        builder.addCase(fetchMiningServicesList.pending, (state) => {
+            state.LoadingStatus = true
+        });
+        builder.addCase(fetchMiningServicesList.fulfilled, (state, action) => {
+            state.mining_services = action.payload.Services
+            state.LoadingStatus = false
+            state.errorBoxStatus = false
+        });
+        builder.addCase(fetchMiningServicesList.rejected, (state, action) => {
+            state.errorBoxStatus = true
+            state.LoadingStatus = false
+            state.errorBoxText = action.error.message || 'An unknown error occurred'
+        });
 }})
 
 export const useErrorBoxStatus = () => useSelector((state: RootState) => state.data.errorBoxStatus);
 export const useErrorBoxText = () => useSelector((state: RootState) => state.data.errorBoxText);
 export const useLoadingStatus = () => useSelector((state: RootState) => state.data.LoadingStatus);
 export const useUser = () => useSelector((state: RootState) => state.data.user);
+export const useCurOrderId = () => useSelector((state: RootState) => state.data.curOrderId);
+export const useMiningServisesInCurOrder = () => useSelector((state: RootState) => state.data.miningServisesInCurOrder);
+export const useSearchValue = () => useSelector((state: RootState) => state.data.searchValue);
+
 
 // const dispatch = useDispatch();
 // const navigate = useNavigate();
@@ -174,6 +239,7 @@ export const {
     setErrorBoxText: setErrorBoxTextAction,
     setLoadingStatus: setLoadingStatusAction,
     setUser: setUserAction,
+    setSearchValue: setSearchValueAction
 } = dataSlice.actions
 
 export const { actions: dataActions, reducer: dataReducer } = dataSlice

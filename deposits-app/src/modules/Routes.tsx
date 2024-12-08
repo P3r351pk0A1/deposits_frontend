@@ -4,6 +4,7 @@ export const ROUTES = {
     REGISTRATION: '/registration',
     LK: '/user',
     AUTHORISATION: '/login',
+    MINING_ORDER: '/mining_order'
 }
 
 export type RouteKeyType = keyof typeof ROUTES;
@@ -14,4 +15,5 @@ export const ROUTE_LABELS: {[key in RouteKeyType]: string} = {
     REGISTRATION: 'Регистрация',
     LK: 'Личный кабинет',
     AUTHORISATION: 'Авторизация',
+    MINING_ORDER: 'Заявка'
   };

@@ -490,10 +490,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/miningServices
      * @secure
      */
-    miningServicesList: (params: RequestParams = {}) =>
+    miningServicesList: (
+      query:{name: string},
+      params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/miningServices`,
         method: "GET",
+        query: query,
         secure: true,
         ...params,
       }),
@@ -542,11 +545,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @duplicate
      * @secure
      */
-    miningServicesCreate2: (id: string, data: MiningOrdersSerialiser, params: RequestParams = {}) =>
+    miningServicesCreate2: (id: string,  params: RequestParams = {}) => //changed
       this.request<MiningOrdersSerialiser, any>({
         path: `/miningServices/${id}`,
         method: "POST",
-        body: data,
         secure: true,
         type: ContentType.Json,
         format: "json",
