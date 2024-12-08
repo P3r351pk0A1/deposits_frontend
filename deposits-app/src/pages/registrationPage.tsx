@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import NavbarComponent from '../components/NavBar';
 import '../assets/css/userInt.css';
-import {setErrorBoxTextAction, setErrorBoxStatusAction, useErrorBoxText, useErrorBoxStatus, setLoadingStatusAction, useLoadingStatus} from '../slices/slice'
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../store';
-import { api } from '../api'
+import {setErrorBoxTextAction, setErrorBoxStatusAction, useErrorBoxText, useErrorBoxStatus, useLoadingStatus, fetchReg} from '../slices/slice'
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../store'; // Import the correct type for dispatch
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../modules/Routes';
 import LoadingWindow from '../components/LoadingWindow'
@@ -18,8 +17,8 @@ const RegistrationPage: React.FC = () => {
         password: '',
         confirmPassword: ''
     });
-
-    const dispatch = useDispatch();
+    const dispatch: AppDispatch = useDispatch(); // Use the correct type for dispatch
+    // const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,30 +41,19 @@ const RegistrationPage: React.FC = () => {
             console.log('Пароли не совпадают');
             return dispatch(setErrorBoxStatusAction(true));              
         }
-        dispatch(setLoadingStatusAction(true))
-            
-        await api.user.userRegCreate({
+        dispatch(fetchReg({
             email: formData.email,
             password: formData.password,
             username: formData.username,
-            first_name: formData.firstName,
-            last_name: formData.lastName,
-        }).then(() => {
-            dispatch(setErrorBoxStatusAction(false))
-            navigate(ROUTES.AUTHORISATION)
-        }).catch((error)=>{
-            dispatch(setErrorBoxStatusAction(true))
-            if (error.response.data.error.email == 'custom user with this email адрес already exists.'){
-                dispatch(setErrorBoxTextAction('Пользователь с такой почтой уже существует'))
+            firstName: formData.firstName,
+            lastName: formData.lastName
+        }))
+        .then((unwrapResult) => {
+            if (unwrapResult.type.endsWith('fulfilled')){
+                navigate(ROUTES.AUTHORISATION);
             }
-            if (error.response.data.error.username == 'custom user with this Имя пользователя already exists.'){
-                dispatch(setErrorBoxTextAction('Пользователь с таким именем уже существует'))
-            }
-        }).finally(()=>{
-            setTimeout(() => {  dispatch(setLoadingStatusAction(false)) }, 1000); //демо красивой анимации
-            // dispatch(setLoadingStatusAction(false))
         })
-    }
+    };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
