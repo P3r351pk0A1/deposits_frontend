@@ -9,6 +9,72 @@
  * ---------------------------------------------------------------
  */
 
+export interface MiningServiceSerializerInserted {
+  /** Name */
+  name?: string | null;
+  /** Status */
+  status?: string | null;
+  /** Url */
+  url?: string | null;
+  /**
+   * Price
+   * @min -2147483648
+   * @max 2147483647
+   */
+  price?: number | null;
+}
+
+export interface MiningServiceOrderSerializerInserted {
+  Mservice?: MiningServiceSerializerInserted;
+  /** Square */
+  square?: number | null;
+}
+
+export interface SingleMiningOrder {
+  /** Mining order id */
+  mining_order_id?: number;
+  /**
+   * Status
+   * @minLength 1
+   */
+  status: string;
+  /**
+   * Creation date
+   * @format date-time
+   */
+  creation_date?: string;
+  /**
+   * Formation date
+   * @format date-time
+   */
+  formation_date?: string | null;
+  /**
+   * Moderation date
+   * @format date-time
+   */
+  moderation_date?: string | null;
+  /** Company name */
+  company_name?: string | null;
+  /** Location */
+  location?: string | null;
+  /**
+   * Mining start date
+   * @format date-time
+   */
+  mining_start_date?: string | null;
+  /**
+   * Order cost
+   * @min -2147483648
+   * @max 2147483647
+   */
+  order_cost?: number | null;
+  mining_services_in_order?: MiningServiceOrderSerializerInserted[];
+  /** Creator */
+  creator?: string;
+  /** Moderator */
+  moderator?: string;
+}
+
 export interface MiningService {
   /** Mining service id */
   mining_service_id?: number;
@@ -28,6 +94,14 @@ export interface MiningService {
    * @max 2147483647
    */
   price?: number | null;
+}
+
+export interface MiningServiceOrder {
+  /** Id */
+  id?: number;
+  Mservice?: MiningService;
+  /** Square */
+  square?: number | null;
 }
 
 export interface MiningOrdersSerialiser {
@@ -304,11 +378,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PUT:/miningOrders/{id}
      * @secure
      */
-    miningOrdersUpdate: (id: string, params: RequestParams = {}) =>
-      this.request<void, any>({
+    miningOrdersUpdate: (id: string, data: SingleMiningOrder, params: RequestParams = {}) =>
+      this.request<SingleMiningOrder, any>({
         path: `/miningOrders/${id}`,
         method: "PUT",
+        body: data,
         secure: true,
+        format: "json",
         ...params,
       }),
 
@@ -336,11 +412,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PUT:/miningOrders/{id}/forming
      * @secure
      */
-    miningOrdersFormingUpdate: (id: string, params: RequestParams = {}) =>
-      this.request<void, any>({
+    miningOrdersFormingUpdate: (id: string, data: SingleMiningOrder, params: RequestParams = {}) =>
+      this.request<SingleMiningOrder, any>({
         path: `/miningOrders/${id}/forming`,
         method: "PUT",
+        body: data,
         secure: true,
+        format: "json",
         ...params,
       }),
 
@@ -352,11 +430,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PUT:/miningOrders/{id}/moderating
      * @secure
      */
-    miningOrdersModeratingUpdate: (id: string, params: RequestParams = {}) =>
-      this.request<void, any>({
+    miningOrdersModeratingUpdate: (id: string, data: SingleMiningOrder, params: RequestParams = {}) =>
+      this.request<SingleMiningOrder, any>({
         path: `/miningOrders/${id}/moderating`,
         method: "PUT",
+        body: data,
         secure: true,
+        format: "json",
         ...params,
       }),
   };
@@ -369,11 +449,19 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PUT:/miningServiceOrder/{pk_mservice}/{pk_morder}
      * @secure
      */
-    miningServiceOrderUpdate: (pkMservice: string, pkMorder: string, params: RequestParams = {}) =>
-      this.request<void, any>({
+    miningServiceOrderUpdate: (
+      pkMservice: string,
+      pkMorder: string,
+      data: MiningServiceOrder,
+      params: RequestParams = {},
+    ) =>
+      this.request<MiningServiceOrder, any>({
         path: `/miningServiceOrder/${pkMservice}/${pkMorder}`,
         method: "PUT",
+        body: data,
         secure: true,
+        type: ContentType.Json,
+        format: "json",
         ...params,
       }),
 
@@ -522,6 +610,42 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags user
+     * @name UserLkCreate
+     * @request POST:/user/LK
+     * @secure
+     */
+    userLkCreate: (data: User, params: RequestParams = {}) =>
+      this.request<User, any>({
+        path: `/user/LK`,
+        method: "POST",
+        body: data,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags user
+     * @name UserLkUpdate
+     * @request PUT:/user/LK
+     * @secure
+     */
+    userLkUpdate: (data: User, params: RequestParams = {}) =>
+      this.request<User, any>({
+        path: `/user/LK`,
+        method: "PUT",
+        body: data,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags user
      * @name UserLoginCreate
      * @request POST:/user/login
      * @secure
@@ -581,42 +705,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     userRegUpdate: (data: User, params: RequestParams = {}) =>
       this.request<User, any>({
         path: `/user/reg`,
-        method: "PUT",
-        body: data,
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags user
-     * @name UserCreate
-     * @request POST:/user/{id}
-     * @secure
-     */
-    userCreate: (id: number, data: User, params: RequestParams = {}) =>
-      this.request<User, any>({
-        path: `/user/${id}`,
-        method: "POST",
-        body: data,
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags user
-     * @name UserUpdate
-     * @request PUT:/user/{id}
-     * @secure
-     */
-    userUpdate: (id: number, data: User, params: RequestParams = {}) =>
-      this.request<User, any>({
-        path: `/user/${id}`,
         method: "PUT",
         body: data,
         secure: true,

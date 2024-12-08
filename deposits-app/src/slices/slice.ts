@@ -50,7 +50,6 @@ export const fetchLogOut = createAsyncThunk(
     async() => {
         try{
             const response = await api.user.userLogoutCreate()
-            console.log(111)
             return response.data
         } 
         catch(error:any){
@@ -58,6 +57,24 @@ export const fetchLogOut = createAsyncThunk(
         }
     }
 )
+
+export const fetchLK = createAsyncThunk(
+    'data/fetchLK',
+    async ({email, password, username, firstName, lastName}: {email: string, password: string, username: string, firstName: string, lastName: string},) => {
+        try{
+            const response = await api.user.userLkUpdate({
+                email: email,
+                password: password,
+                username: username,
+                first_name: firstName,      
+                last_name: lastName,
+            })
+            return response.data
+    }   
+    catch(error:any){
+        throw new Error(error.response.data.status)
+    }
+})
 
 
 
@@ -115,8 +132,32 @@ const dataSlice = createSlice({
             state.errorBoxText = action.error.message || 'An unknown error occurred'
         });
 
+        builder.addCase(fetchLogOut.pending, (state) =>{
+            state.LoadingStatus = true
+        });
         builder.addCase(fetchLogOut.fulfilled, (state) =>{
             state.user = {} as User
+            state.LoadingStatus = false
+            state.errorBoxStatus = false
+        });
+        builder.addCase(fetchLogOut.rejected, (state, action) =>{
+            state.errorBoxStatus = true
+            state.LoadingStatus = false
+            state.errorBoxText = action.error.message || 'An unknown error occurred'
+        });
+
+        builder.addCase(fetchLK.pending, (state) => {
+            state.LoadingStatus = true
+        });
+        builder.addCase(fetchLK.fulfilled, (state, action) => {
+            state.user = action.payload  
+            state.LoadingStatus = false
+            state.errorBoxStatus = false
+        });
+        builder.addCase(fetchLK.rejected, (state, action) => {
+            state.errorBoxStatus = true
+            state.LoadingStatus = false
+            state.errorBoxText = action.error.message || 'An unknown error occurred'
         });
 }})
 

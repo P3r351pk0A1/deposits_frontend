@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
 import NavbarComponent from '../components/NavBar';
 import '../assets/css/userInt.css';
+import LoadingWindow from '../components/LoadingWindow';
+import { useLoadingStatus, setErrorBoxTextAction, setErrorBoxStatusAction, fetchLK, useUser } from '../slices/slice';
+import { AppDispatch } from '../store';
+import { useDispatch } from 'react-redux';
 
 const LKPage: React.FC = () => {
     const [formData, setFormData] = useState({
-        firstName: '',
-        lastName: '',
-        username: '',
-        email: '',
+        firstName: useUser().first_name,
+        lastName: useUser().last_name,
+        username: useUser().username,
+        email: useUser().email,
         password: '',
-        confirmPassword: ''
+        confirmPassword: '' 
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -20,15 +24,41 @@ const LKPage: React.FC = () => {
         });
     };
 
+    const dispatch: AppDispatch = useDispatch();
+
+    const handleClick = async () => {
+        if(formData.password != formData.confirmPassword){
+            dispatch(setErrorBoxTextAction('Пароли не совпадают'));
+            return dispatch(setErrorBoxStatusAction(true));              
+        }       
+        if (formData.password == ''){
+            dispatch(fetchLK({
+                email: formData.email,
+                password: '-1',             
+                username: formData.username,
+                firstName: formData.firstName,
+                lastName: formData.lastName
+            }))       
+        }
+        else    dispatch(fetchLK({
+            email: formData.email,
+            password: formData.password,
+            username: formData.username,
+            firstName: formData.firstName,
+            lastName: formData.lastName
+        }))      
+        console.log(useUser())    
+    };
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        // Add form submission logic here
-        console.log(formData);
+        handleClick();
     };
 
     return (
         <>
             <NavbarComponent/>
+            <LoadingWindow show={useLoadingStatus()} onHide={() => {}}/>
             <form onSubmit={handleSubmit}>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', maxWidth: '450px', margin: '6% auto 0 auto' }}>
                     <div className = 'inpBox'>
@@ -55,7 +85,7 @@ const LKPage: React.FC = () => {
                         <label className='inpLabel'>Подтверждение пароля:</label>
                         <input className = 'inputUsDataField' type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} />
                     </div>
-                    <button className = 'sbmBtn' type="submit">Изменить данные</button>
+                    <button className = 'sbmBtn' type="submit" onClick={handleSubmit}>Изменить данные</button>
                 </div>
             </form>
         </>

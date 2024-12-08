@@ -3,7 +3,6 @@ import NavbarComponent from '../components/NavBar';
 import '../assets/css/userInt.css';
 import {setErrorBoxTextAction, setErrorBoxStatusAction, useErrorBoxText, useErrorBoxStatus, setLoadingStatusAction, useLoadingStatus, fetchAuth} from '../slices/slice'
 import { useDispatch} from 'react-redux';
-import { api } from '../api'
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../modules/Routes';
 import LoadingWindow from '../components/LoadingWindow'
