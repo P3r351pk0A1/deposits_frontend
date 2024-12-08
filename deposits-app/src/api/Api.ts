@@ -544,13 +544,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/user/logout
      * @secure
      */
-    userLogoutCreate: (data: User, params: RequestParams = {}) =>
-      this.request<User, any>({
+    userLogoutCreate: (params: RequestParams = {}) =>
+      this.request<void, any>({
         path: `/user/logout`,
         method: "POST",
-        body: data,
         secure: true,
-        format: "json",
         ...params,
       }),
 

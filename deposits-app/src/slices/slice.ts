@@ -1,7 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { useSelector } from "react-redux"
 import { RootState } from "../store"
-import { api } from '../api'
+import { api} from '../api'
+import {User} from '../api/Api'
+
 import { useDispatch} from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '../modules/Routes';
@@ -24,6 +26,39 @@ export const fetchReg = createAsyncThunk(
     }
 })
 
+export const fetchAuth = createAsyncThunk(
+    'data/fetchAuth',
+    async({username, password}: {username: string, password: string}) => {
+        try{
+            const response = await api.user.userLoginCreate({
+                username: username,
+                password: password,
+                email: '',
+                first_name: '',
+                last_name: ''
+            })
+            return response.data
+        }
+        catch(error:any){
+            throw new Error(error.response.data.status)
+        }
+    }
+)
+
+export const fetchLogOut = createAsyncThunk(
+    'data/fetchLogOut',
+    async() => {
+        try{
+            const response = await api.user.userLogoutCreate()
+            console.log(111)
+            return response.data
+        } 
+        catch(error:any){
+            throw new Error(error.response.data.status)
+        }
+    }
+)
+
 
 
 const dataSlice = createSlice({
@@ -35,6 +70,7 @@ const dataSlice = createSlice({
         errorBoxStatus: false,
         errorBoxText :'',
         LoadingStatus: false,
+        user: {} as User,
     },
     // Редьюсеры в слайсах мутируют состояние и ничего не возвращают наружу
     reducers: {
@@ -45,31 +81,49 @@ const dataSlice = createSlice({
             state.errorBoxText = payload
         },
         setLoadingStatus(state, {payload}){
-            state.LoadingStatus = payload
-        }
+            state.LoadingStatus = payload   
+        },
+        setUser(state, {payload}){
+            state.user = payload
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(fetchReg.pending, (state) => {
             state.LoadingStatus = true
-            console.log("p")
         });
         builder.addCase(fetchReg.fulfilled, (state) => {
             state.LoadingStatus = false
             state.errorBoxStatus = false
-            console.log("f")
         });
         builder.addCase(fetchReg.rejected, (state, action) => {
             state.LoadingStatus = false
             state.errorBoxStatus = true
             state.errorBoxText = action.error.message || 'An unknown error occurred'
-            console.log("r")
         });
-    }
-})
+
+        builder.addCase(fetchAuth.pending, (state) => {
+            state.LoadingStatus = true
+        });
+        builder.addCase(fetchAuth.fulfilled, (state, action) => {
+            state.user = action.payload
+            state.LoadingStatus = false
+            state.errorBoxStatus = false
+        });
+        builder.addCase(fetchAuth.rejected, (state, action) => {
+            state.LoadingStatus = false
+            state.errorBoxStatus = true
+            state.errorBoxText = action.error.message || 'An unknown error occurred'
+        });
+
+        builder.addCase(fetchLogOut.fulfilled, (state) =>{
+            state.user = {} as User
+        });
+}})
 
 export const useErrorBoxStatus = () => useSelector((state: RootState) => state.data.errorBoxStatus);
 export const useErrorBoxText = () => useSelector((state: RootState) => state.data.errorBoxText);
 export const useLoadingStatus = () => useSelector((state: RootState) => state.data.LoadingStatus);
+export const useUser = () => useSelector((state: RootState) => state.data.user);
 
 // const dispatch = useDispatch();
 // const navigate = useNavigate();
@@ -77,7 +131,8 @@ export const useLoadingStatus = () => useSelector((state: RootState) => state.da
 export const {
     setErrorBoxStatus: setErrorBoxStatusAction,
     setErrorBoxText: setErrorBoxTextAction,
-    setLoadingStatus: setLoadingStatusAction
+    setLoadingStatus: setLoadingStatusAction,
+    setUser: setUserAction,
 } = dataSlice.actions
 
 export const { actions: dataActions, reducer: dataReducer } = dataSlice

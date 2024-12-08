@@ -36,9 +36,7 @@ const RegistrationPage: React.FC = () => {
             return dispatch(setErrorBoxStatusAction(true));   
         }
         if(formData.password != formData.confirmPassword){
-            console.log(formData.password);
             dispatch(setErrorBoxTextAction('Пароли не совпадают'));
-            console.log('Пароли не совпадают');
             return dispatch(setErrorBoxStatusAction(true));              
         }
         dispatch(fetchReg({
