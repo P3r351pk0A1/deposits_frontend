@@ -79,3 +79,25 @@ position:absolute;
         font-size: 20px;
     }
 }
+
+.errorBox{
+    color: red;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    animation: fadeIn 0.25s ease-in-out;
+    text-align: center;
+    margin: 10px 0 10px 10px;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+    }
+}
