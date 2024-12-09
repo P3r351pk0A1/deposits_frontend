@@ -2,14 +2,20 @@
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "deposits-app",
   "version": "0.1.0",
-  "identifier": "com.tauri.dev",
+  "identifier": "com.deposits.app",
   "build": {
-    "frontendDist": "../build",
-    "devUrl": "http://localhost:3000",
+    "frontendDist": "../dist",
+    "devUrl": "http://192.168.43.190:5173",
     "beforeDevCommand": "npm run dev",
     "beforeBuildCommand": "npm run build"
   },
+  "plugins": {
+    "http": {
+      "enabled": true
+    }
+  },
   "app": {
+    "withGlobalTauri": true,
     "windows": [
       {
         "title": "deposits-app",

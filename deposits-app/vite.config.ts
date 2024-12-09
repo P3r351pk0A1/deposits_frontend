@@ -5,11 +5,11 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   // base: "/deposits_frontend",
   server: {
-    host: true, 
-    port: 3000,
+    host: '192.168.43.190', 
+    port: 5173,
     proxy: {
       "/api": {
-        target: "http://localhost:8000",
+        target: "http://192.168.43.190:8000",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
