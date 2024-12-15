@@ -1,5 +1,4 @@
 import { FC, useEffect, useState} from 'react'
-import { useRef } from 'react'
 
 import { MiningServicesInfo, getMiningServicesByName } from '../modules/miningServiceApi'
 import { MINING_SERVICES_MOCK } from '../modules/mock'
@@ -34,20 +33,6 @@ const MiningServicesPage: FC = () => {
         })
     }
 
-    const carouselRef = useRef<HTMLDivElement>(null)
-
-    const scrollLeft = () => {
-        if (carouselRef.current) {
-            carouselRef.current.scrollBy({ left: -260, behavior: 'smooth' })
-        }
-    }
-
-    const scrollRight = () => {
-        if (carouselRef.current) {
-            carouselRef.current.scrollBy({ left: 260, behavior: 'smooth' })
-        }
-    }
-
     useEffect(() => {
         updateMiningServices()
         return () => {
@@ -70,15 +55,11 @@ const MiningServicesPage: FC = () => {
                         placeholder="Поиск горных работ" 
                     />
                             <Container className="d-flex flex-wrap container-fluid g-4 justify-content-center w-100 gap-4 mt-5" >
-                                <div ref={carouselRef} className="d-flex overflow-auto" style={{ maxWidth: '100%' }}>
                                     {mining_services.map((service, index) => (
                                         <div key={`${service.id}-${index}`} className="flex-shrink-0" style={{ height: '400px', minWidth: '250px', maxWidth: '250px', margin: '0 10px' }}>
                                             <MiningServiceCard {...service} />
                                         </div>
                                     ))}
-                                </div>
-                                <button onClick={scrollLeft} className="carousel-control-prev">‹</button>
-                                <button onClick={scrollRight} className="carousel-control-next">›</button>
                                 <div style={{ width: '100%', height: '50px', backgroundColor: 'white', marginTop: '-50px' }}></div>
                             </Container>
         </>
