@@ -1,4 +1,4 @@
-import React from 'react'
+// import React from 'react'
 import ReactDOM from 'react-dom/client'
 import 'bootstrap/dist/css/bootstrap.min.css'
 // import NavbarComponent  from './components/NavBar'
@@ -10,11 +10,9 @@ import { Provider } from "react-redux";
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <>
-    <Provider store = {store}>
-      <React.StrictMode>
-        <App />
-      </React.StrictMode>
-    </Provider>
+    {/* <React.StrictMode> */}
+      <App />
+    {/* </React.StrictMode> */}
   </>,
 )
 
@@ -29,4 +27,4 @@ if ("serviceWorker" in navigator) {
         console.log('ServiceWorker registration failed: ', error);
       });
   })
-}
+} 
