@@ -5,11 +5,6 @@ import { api} from '../api'
 import {User, MiningService, LinkServiceOrder} from '../api/Api'
 import { MINING_SERVICES_MOCK } from '../modules/mock';
 
-import { useDispatch} from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import { ROUTES } from '../modules/Routes';
-import { act } from "react"
-
 export const fetchReg = createAsyncThunk(
     'data/fetchReg',
     async ({email, password, username, firstName, lastName}: {email: string, password: string, username: string, firstName: string, lastName: string},) => {

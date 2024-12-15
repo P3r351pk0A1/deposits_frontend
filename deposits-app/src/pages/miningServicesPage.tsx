@@ -1,7 +1,4 @@
-import { FC, useEffect, useState} from 'react'
-
-import { MiningServicesInfo, getMiningServicesByName } from '../modules/miningServiceApi'
-import { MINING_SERVICES_MOCK } from '../modules/mock'
+import { FC, useEffect} from 'react'
 
 import MiningServiceCard from '../components/miningServiceCard'
 import { Container} from 'react-bootstrap'
@@ -12,7 +9,7 @@ import InputField from '../components/inputField'
 import { BreadCrumbs } from '../components/BreadCrumbs'
 import { ROUTE_LABELS } from '../modules/Routes'
 import NavbarComponent  from '../components/NavBar'
-import { useMServicesInCurOrder, useMiningServices, useminingServisesInCurOrderCount, useCurOrderId , useSearchValue, fetchMiningServicesList, setSearchValueAction} from '../slices/slice'
+import {useMiningServices, useminingServisesInCurOrderCount, useCurOrderId , useSearchValue, fetchMiningServicesList, setSearchValueAction} from '../slices/slice'
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../store'; 
 import {ROUTES} from '../modules/Routes'
@@ -21,9 +18,6 @@ import {ROUTES} from '../modules/Routes'
 
 const MiningServicesPage: FC = () => {
 
-    const [loading, setLoading] = useState(false)
-    const [searchMiningService, setSearchMiningService] = useState('')
-    const miningServisesInCurOrder = useMServicesInCurOrder()
     const miningServisesInCurOrderCount = useminingServisesInCurOrderCount()
     const curOrderId = useCurOrderId()
     const searchValue = useSearchValue()
@@ -32,12 +26,6 @@ const MiningServicesPage: FC = () => {
     const updateMiningServices = () => {
         dispatch(fetchMiningServicesList(searchValue))
     }
-
-    useEffect(() => {
-        updateMiningServices()
-        return () => {
-        }
-    }, [searchMiningService])
 
     useEffect(() => {
         updateMiningServices()
@@ -62,7 +50,6 @@ const MiningServicesPage: FC = () => {
                         dispatch(setSearchValueAction(value))
                     }} 
                     onSubmit={handleSearch} 
-                    loading={loading} 
                     placeholder="Поиск горных работ" 
                 />
                 <div>
