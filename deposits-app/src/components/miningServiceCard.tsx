@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 
@@ -7,8 +7,8 @@ import { ROUTES } from '../modules/Routes';
 import "../assets/css/miningServiceCard.css";
 
 import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../store'; 
-import {useUser, fetchAddMiningServiceToOrder} from '../slices/slice'
+import { AppDispatch } from '../store';
+import { useUser, fetchAddMiningServiceToOrder, useMServicesInCurOrder } from '../slices/slice'
 
 interface miningServiceCardProps {
     mining_service_id: number
@@ -22,12 +22,31 @@ const MiningServiceCard: FC<miningServiceCardProps> = (
     { mining_service_id, name, url, price }
 ) => {
 
+    const [added, setAdded] = useState(false)
     const user = useUser()
+    const MServicesInCurOrder = useMServicesInCurOrder()
     const dispatch: AppDispatch = useDispatch()
 
     const handleAdd = async () => {
         dispatch(fetchAddMiningServiceToOrder(mining_service_id))
-    }   
+        setAdded(true)
+        console.log(added)
+    }
+
+    const checkAdded = () => {
+        MServicesInCurOrder.forEach((element) => {
+            if (element.mining_service === mining_service_id) {
+                setAdded(true);
+            }
+        })
+    }
+
+    useEffect(() => {
+    }, [added])
+
+    useEffect(() => {
+        checkAdded()
+    })
 
     return (
         <Card className='shadow shadow-bg serviceCard'>
@@ -38,9 +57,9 @@ const MiningServiceCard: FC<miningServiceCardProps> = (
                 <Card.Title>{name}</Card.Title>
                 <Card.Title>{price} руб.</Card.Title>
             </Card.Body>
-            <Button variant="outline-danger" className='add-button w-100' hidden={user == null} onClick={handleAdd}>Добавить</Button>
+            <Button variant="outline-danger" className='add-button w-100' hidden={user == null} disabled={added} onClick={handleAdd}>Добавить</Button>
         </Card>
-        
+
     )
 }
 

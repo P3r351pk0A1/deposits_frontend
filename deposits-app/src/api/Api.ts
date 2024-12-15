@@ -104,48 +104,28 @@ export interface MiningServiceOrder {
   square?: number | null;
 }
 
-export interface MiningOrdersSerialiser {
-  /** Mining order id */
-  mining_order_id?: number;
-  /**
-   * Status
-   * @minLength 1
-   */
-  status: string;
-  /**
-   * Creation date
-   * @format date-time
-   */
-  creation_date?: string;
-  /**
-   * Formation date
-   * @format date-time
-   */
-  formation_date?: string | null;
-  /**
-   * Moderation date
-   * @format date-time
-   */
-  moderation_date?: string | null;
-  /** Company name */
-  company_name?: string | null;
-  /** Location */
-  location?: string | null;
-  /**
-   * Mining start date
-   * @format date-time
-   */
-  mining_start_date?: string | null;
-  /** Creator */
-  creator?: string;
-  /** Moderator */
-  moderator?: string;
-  /**
-   * Order cost
-   * @min -2147483648
-   * @max 2147483647
-   */
-  order_cost?: number | null;
+export interface ActiveMOrder {
+  /** Miningservicesinusersdraft */
+  MiningServicesInUsersDraft: number;
+  /** Usersdraftid */
+  UsersDraftId: number;
+}
+
+export interface LinkServiceOrder {
+  /** Id */
+  id?: number;
+  /** Square */
+  square?: number | null;
+  /** Mining order */
+  mining_order: number;
+  /** Mining service */
+  mining_service: number;
+}
+
+export interface MiningServicesListResponse {
+  services: MiningService[];
+  active_m_order: ActiveMOrder;
+  MServicesInCurOrder: LinkServiceOrder[];
 }
 
 export interface User {
@@ -491,13 +471,18 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     miningServicesList: (
-      query:{name: string},
-      params: RequestParams = {}) =>
-      this.request<void, any>({
+      query: {
+        /** @minLength 1 */
+        name: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<MiningServicesListResponse, any>({
         path: `/miningServices`,
         method: "GET",
         query: query,
         secure: true,
+        format: "json",
         ...params,
       }),
 
@@ -545,12 +530,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @duplicate
      * @secure
      */
-    miningServicesCreate2: (id: string,  params: RequestParams = {}) => //changed
-      this.request<MiningOrdersSerialiser, any>({
+    miningServicesCreate2: (id: string, params: RequestParams = {}) =>
+      this.request<ActiveMOrder, any>({
         path: `/miningServices/${id}`,
         method: "POST",
         secure: true,
-        type: ContentType.Json,
         format: "json",
         ...params,
       }),
