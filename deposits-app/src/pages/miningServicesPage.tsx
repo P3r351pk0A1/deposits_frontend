@@ -55,6 +55,8 @@ const MiningServicesPage: FC = () => {
     //     setSearchMiningService(value)  
     // }
 
+    const dispatch = useDispatch<AppDispatch>();
+
     const handleSearch = async () => {
         dispatch(fetchMiningServicesList(searchValue))  
         console.log(searchValue)
