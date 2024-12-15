@@ -8,12 +8,18 @@ export default defineConfig({
     host: '192.168.43.190', 
     port: 5173,
     proxy: {
-      "/api": {
-        target: "http://192.168.43.190:8000",
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ""),
-      },
+          "/api": {
+            target: "http://localhost:8000",
+            changeOrigin: true,
+            rewrite: (path) => path.replace(/^\/api/, ""),
+          },
+          "/mininglogo": {
+            target: "http://localhost:9000/mininglogo",
+            changeOrigin: true,   
+            rewrite: (path) => path.replace(/^\/mininglogo/, ""),
+          },
     }
+    
   },
-  plugins: [react()],
+  plugins: [react()], 
 })
