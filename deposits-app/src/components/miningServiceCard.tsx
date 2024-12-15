@@ -30,7 +30,6 @@ const MiningServiceCard: FC<miningServiceCardProps> = (
     const handleAdd = async () => {
         dispatch(fetchAddMiningServiceToOrder(mining_service_id))
         setAdded(true)
-        console.log(added)
     }
 
     const checkAdded = () => {
