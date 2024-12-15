@@ -58,7 +58,7 @@ const MiningServicePage: FC = () => {
                <h2 className='text-uppercase'>{mining_service?.name}</h2>
                <div className='service-details container-fluid mt-3'>
                     <div className='service-img-box '>
-                        <img src={mining_service?.url} className='service-img' alt='service'></img>
+                        <img src={('http://192.168.1.20:9000' + mining_service?.url)} className='service-img' alt='service'></img>
                     </div>
                     <div className='mservice-long-descr mt-2'>
                         <p>{mining_service?.long_description}</p>
