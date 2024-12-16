@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { useSelector } from "react-redux"
 import { RootState } from "../store"
 import { api} from '../api'
-import {User, MiningService, LinkServiceOrder} from '../api/Api'
+import {User, MiningService, LinkServiceOrder, SingleMiningOrder} from '../api/Api'
 import { MINING_SERVICES_MOCK } from '../modules/mock';
 
 export const fetchReg = createAsyncThunk(
@@ -99,6 +99,19 @@ export const fetchMiningServicesList = createAsyncThunk(
     }
 )
 
+export const fetchGetMiningOrder = createAsyncThunk(
+    'data/fetchGetMiningOrder',
+    async (id: number) => {
+        try{
+            const response = await api.miningOrders.miningOrdersRead(id.toString())
+            return response.data
+        }
+        catch(error:any){
+            throw new Error(error.response.data.status)
+        }
+    }
+)
+
 
 interface DataState {
     mining_services: MiningService[];
@@ -109,7 +122,8 @@ interface DataState {
     errorBoxStatus: boolean;
     errorBoxText: string;
     searchValue: string;
-    user: any; // Замените на правильный тип
+    user: User;
+    miningOrder: SingleMiningOrder;
 }
 
 const initialState: DataState = {
@@ -122,6 +136,7 @@ const initialState: DataState = {
     errorBoxText :'',
     searchValue: '',
     user: {} as User,
+    miningOrder: {} as SingleMiningOrder,
 }
 
 const dataSlice = createSlice({
@@ -178,9 +193,17 @@ const dataSlice = createSlice({
             state.LoadingStatus = true
         });
         builder.addCase(fetchLogOut.fulfilled, (state) =>{
-            state.user = {} as User
-            state.LoadingStatus = false
-            state.errorBoxStatus = false
+            //обнуление всех состояний при логауте
+            state.user = initialState.user
+            state.mining_services = initialState.mining_services
+            state.MServicesInCurOrder = initialState.MServicesInCurOrder
+            state.miningServisesInCurOrderCount = initialState.miningServisesInCurOrderCount
+            state.curOrderId = initialState.curOrderId
+            state.LoadingStatus = initialState.LoadingStatus
+            state.errorBoxStatus = initialState.errorBoxStatus
+            state.errorBoxText = initialState.errorBoxText
+            state.searchValue = initialState.searchValue
+            state.miningOrder = initialState.miningOrder
         });
         builder.addCase(fetchLogOut.rejected, (state, action) =>{
             state.errorBoxStatus = true
@@ -237,6 +260,20 @@ const dataSlice = createSlice({
             }
             state.errorBoxText = action.error.message || 'An unknown error occurred'
         });
+
+        builder.addCase(fetchGetMiningOrder.pending, (state) => {
+            state.LoadingStatus = true
+        });
+        builder.addCase(fetchGetMiningOrder.fulfilled, (state, action) => {
+            state.miningOrder = action.payload
+            state.LoadingStatus = false
+            state.errorBoxStatus = false
+        });
+        builder.addCase(fetchGetMiningOrder.rejected, (state, action) => {
+            state.errorBoxStatus = true
+            state.LoadingStatus = false
+            state.errorBoxText = action.error.message || 'An unknown error occurred'
+        });
 }})
 
 export const useErrorBoxStatus = () => useSelector((state: RootState) => state.data.errorBoxStatus);
@@ -248,6 +285,7 @@ export const useMServicesInCurOrder = () => useSelector((state: RootState) => st
 export const useminingServisesInCurOrderCount = () => useSelector((state: RootState) => state.data.miningServisesInCurOrderCount);
 export const useSearchValue = () => useSelector((state: RootState) => state.data.searchValue);
 export const useMiningServices = () => useSelector((state: RootState) => state.data.mining_services);
+export const useMiningOrder = () => useSelector((state: RootState) => state.data.miningOrder);
 
 // mining_services: MiningService[];
 // MServicesInCurOrder: LinkServiceOrder[];

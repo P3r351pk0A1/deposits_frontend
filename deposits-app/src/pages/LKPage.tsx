@@ -47,7 +47,7 @@ const LKPage: React.FC = () => {
             firstName: formData.firstName,
             lastName: formData.lastName
         }))      
-        console.log(useUser())    
+        // console.log(useUser())    
     };
 
     const handleSubmit = (e: React.FormEvent) => {

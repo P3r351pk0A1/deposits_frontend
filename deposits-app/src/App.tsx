@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import RegistrationPage from './pages/registrationPage'
 import LKPage from './pages/LKPage'
 import AuthorizationPage from './pages/authorizationPage'
+import MiningOrderPage from './pages/miningOrderPage'
 
 function App() {
   // const [searchState, searchDispatch] = useReducer(searchReducer, initialState);
@@ -18,6 +19,7 @@ function App() {
         <Route path={ROUTES.HOME} index element={<MainPage />} />
         <Route path={ROUTES.MINING_SERVICES} element={<MiningServicesPage />} />
         <Route path={`${ROUTES.MINING_SERVICES}/:id`} element={<MiningServicePage />} />
+        <Route path={`${ROUTES.MINING_ORDER}/:id`} element={<MiningOrderPage />} />
         <Route path={ROUTES.REGISTRATION} element={<RegistrationPage />} />
         <Route path={ROUTES.LK} element={<LKPage/>} />
         <Route path={ROUTES.AUTHORISATION} element={<AuthorizationPage/>} />

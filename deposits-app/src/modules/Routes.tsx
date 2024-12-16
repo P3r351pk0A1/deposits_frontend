@@ -4,7 +4,7 @@ export const ROUTES = {
     REGISTRATION: '/registration',
     LK: '/user',
     AUTHORISATION: '/login',
-    MINING_ORDER: '/mining_order'
+    MINING_ORDER: '/mining_orders'
 }
 
 export type RouteKeyType = keyof typeof ROUTES;

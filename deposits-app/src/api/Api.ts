@@ -10,6 +10,8 @@
  */
 
 export interface MiningServiceSerializerInserted {
+  /** Mining service id */
+  mining_service_id?: number;
   /** Name */
   name?: string | null;
   /** Status */
@@ -343,10 +345,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     miningOrdersRead: (id: string, params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<SingleMiningOrder, any>({
         path: `/miningOrders/${id}`,
         method: "GET",
         secure: true,
+        format: "json",
         ...params,
       }),
 

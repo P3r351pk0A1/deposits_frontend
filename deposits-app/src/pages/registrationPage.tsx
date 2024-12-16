@@ -56,7 +56,6 @@ const RegistrationPage: React.FC = () => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         handleClick();
-        console.log(formData);
     };
 
     const errorBoxStatus = useErrorBoxStatus();

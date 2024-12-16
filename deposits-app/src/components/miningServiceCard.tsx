@@ -56,7 +56,7 @@ const MiningServiceCard: FC<miningServiceCardProps> = (
                 <Card.Title>{name}</Card.Title>
                 <Card.Title>{price} руб.</Card.Title>
             </Card.Body>
-            <Button variant="outline-danger" className='add-button w-100' hidden={user == null} disabled={added} onClick={handleAdd}>Добавить</Button>
+            <Button variant="outline-danger" className='add-button w-100' hidden={user.username === undefined} disabled={added} onClick={handleAdd}>Добавить</Button>
         </Card>
 
     )

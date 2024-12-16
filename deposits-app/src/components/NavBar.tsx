@@ -2,22 +2,30 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { ROUTES } from '../modules/Routes';
 import '../assets/css/NavBar.css';
-import { Link} from 'react-router-dom';
-import { FC } from 'react'
+import { Link, useNavigate } from 'react-router-dom';
+import { FC, useEffect } from 'react'
 import { AppDispatch } from '../store'
 import { useUser, fetchLogOut } from '../slices/slice'
 import { useDispatch } from 'react-redux';
 
-
-
 const NavbarComponent: FC = () => {
     const user = useUser()
     const username = user.username
+    const navigate = useNavigate()
+
     const dispatch: AppDispatch = useDispatch();
 
     const exitHandler = () => {
-        dispatch(fetchLogOut())
+        dispatch(fetchLogOut()).then((unwrapResult) => {
+            if (unwrapResult.type.endsWith('fulfilled')) {
+                navigate(ROUTES.HOME)
+            }
+        })
     }   
+
+    useEffect(() => {
+        // console.log(user)
+    }, [user])
 
 
   return (
