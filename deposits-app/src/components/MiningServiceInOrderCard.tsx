@@ -38,7 +38,7 @@ const MiningServiceInOrderCard: FC<MiningServiceCardProps> = (
 
     return (
         <div className='d-flex gap-4 shadow shadow-bg border border-light rounded-left rounded-right bg-white' style={{ height: '200px' }}  >
-            <div className='appeal-issue-card-image w-100 h-100'>
+            <div className='w-100 h-100'>
                 <img src={ms_url}></img>
             </div>
             <div className='d-flex w-75 justify-content-center align-items-center text-center text-uppercase'>

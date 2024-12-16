@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react'
 import { Table, Form, Button } from 'react-bootstrap'
-import { useParams } from "react-router-dom"
+import { useParams, useNavigate } from "react-router-dom"
 
 import NavbarComponent from '../components/NavBar';
 
@@ -25,6 +25,7 @@ const MiningOrderPage: FC = () => {
     const mining_order = useMiningOrder()
     const cur_mining_order_id = useCurOrderId()
     const MServicesInCurOrder = useMServicesInCurOrder()
+    const navigate = useNavigate()
 
     const getMiningOrderData = async() => {
         if (!id) return
@@ -61,14 +62,22 @@ const MiningOrderPage: FC = () => {
         if (!id) return
         let id_numeric: number = parseInt(id)
         if (isNaN(id_numeric)) return
-        dispatch(fetchFormMiningOrder(id_numeric))
+        dispatch(fetchFormMiningOrder(id_numeric)).then((unwrapResult) => {
+            if(unwrapResult.type.endsWith('fulfilled')){
+                navigate(ROUTES.HOME)
+            }
+        })
     }
 
     const handleDelete = async () => {
         if (!id) return
-        let id_numeric: number = parseInt(id)
+        let id_numeric: number = parseInt(id)   
         if (isNaN(id_numeric)) return
-        dispatch(fetchDeleteMiningOrder(id_numeric))
+        dispatch(fetchDeleteMiningOrder(id_numeric)).then((unwrapResult) => {
+            if(unwrapResult.type.endsWith('fulfilled')){
+                navigate(ROUTES.HOME)
+            }
+        })
     }
 
     const errorBoxStatus = useErrorBoxStatus();
