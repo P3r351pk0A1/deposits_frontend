@@ -112,6 +112,70 @@ export const fetchGetMiningOrder = createAsyncThunk(
     }
 )
 
+export const fetchModifyMiningOrder = createAsyncThunk(
+    'data/fetchModifyMiningOrder',
+    async ({id, company_name, location, mining_start_date}:{id: number, company_name: string, location: string, mining_start_date: string}) => {
+        try{
+            const response = await api.miningOrders.miningOrdersUpdate(id.toString(), {
+                company_name: company_name,
+                location: location,
+                mining_start_date: mining_start_date
+            })
+            return response.data
+        }
+        catch(error:any){
+            throw new Error(error.response.data.status)
+        }
+    }
+)
+
+export const fetchFormMiningOrder = createAsyncThunk(
+    'data/fetchFormMiningOrder',
+    async (id: number) => {
+        try {
+            const response = await api.miningOrders.miningOrdersFormingUpdate(id.toString())
+            return response.data
+        } catch (error: any) {
+            throw new Error(error.response.data.status)
+        }
+    }
+)
+
+export const fetchDeleteMiningOrder = createAsyncThunk(
+    'data/fetchDeleteMiningOrder',
+    async (id: number) => {
+        try {
+            const response = await api.miningOrders.miningOrdersDelete(id.toString())
+            return response.data
+        } catch (error: any) {
+            throw new Error(error.response.data.status)
+        }
+    }
+)
+
+export const fetchChangeMServiceSquare = createAsyncThunk(
+    'data/fetchChangeMServiceSquare',
+    async ({pkMservice, pkMorder, square}:{pkMservice: number, pkMorder: number, square: number}) => {
+        try {
+            const response = await api.miningServiceOrder.miningServiceOrderUpdate(pkMservice.toString(), pkMorder.toString(), {square: square})
+            return response.data
+        } catch (error: any) {
+            throw new Error(error.response.data.status)
+        }
+    }
+)
+
+export const fetchDeleteMService = createAsyncThunk(
+    'data/fetchDeleteMService',
+    async ({pkMservice, pkMorder}:{pkMservice: number, pkMorder: number}) => {
+        try {
+            const response = await api.miningServiceOrder.miningServiceOrderDelete(pkMservice.toString(), pkMorder.toString())
+            return response.data
+        } catch (error: any) {
+            throw new Error(error.response.data.status)
+        }
+    }
+)
 
 interface DataState {
     mining_services: MiningService[];
@@ -274,6 +338,68 @@ const dataSlice = createSlice({
             state.LoadingStatus = false
             state.errorBoxText = action.error.message || 'An unknown error occurred'
         });
+
+        builder.addCase(fetchFormMiningOrder.pending, (state) => {
+            state.LoadingStatus = true
+        });
+        builder.addCase(fetchFormMiningOrder.fulfilled, (state) => {
+            state.curOrderId = initialState.curOrderId
+            state.MServicesInCurOrder = initialState.MServicesInCurOrder
+            state.miningServisesInCurOrderCount = initialState.miningServisesInCurOrderCount
+            state.LoadingStatus = false
+            state.errorBoxStatus = false
+        });
+        builder.addCase(fetchFormMiningOrder.rejected, (state, action) => {
+            state.errorBoxStatus = true
+            state.LoadingStatus = false
+            state.errorBoxText = action.error.message        || 'An unknown error occurred'
+        });
+
+        builder.addCase(fetchDeleteMiningOrder.pending, (state) => {
+            state.LoadingStatus = true
+        });
+        builder.addCase(fetchDeleteMiningOrder.fulfilled, (state) => {
+            state.curOrderId = initialState.curOrderId
+            state.MServicesInCurOrder = initialState.MServicesInCurOrder
+            state.miningServisesInCurOrderCount = initialState.miningServisesInCurOrderCount
+            state.LoadingStatus = false
+            state.errorBoxStatus = false
+        });
+        builder.addCase(fetchDeleteMiningOrder.rejected, (state, action) => {
+            state.errorBoxStatus = true
+            state.LoadingStatus = false
+            state.errorBoxText = action.error.message        || 'An unknown error occurred'
+        });
+
+        builder.addCase(fetchChangeMServiceSquare.pending, (state) => {
+            state.LoadingStatus = true
+        });
+        builder.addCase(fetchChangeMServiceSquare.fulfilled, (state) => {
+
+            state.LoadingStatus = false
+            state.errorBoxStatus = false
+        });
+        builder.addCase(fetchChangeMServiceSquare.rejected, (state, action) => {
+            state.errorBoxStatus = true
+            state.LoadingStatus = false
+            state.errorBoxText = action.error.message        || 'An unknown error occurred'
+        });
+
+        builder.addCase(fetchDeleteMService.pending, (state) => {
+            state.LoadingStatus = true
+        });
+        builder.addCase(fetchDeleteMService.fulfilled, (state, action) => {
+            state.MServicesInCurOrder = state.MServicesInCurOrder.filter((item) => item.mining_service !== action.meta.arg.pkMservice)
+            state.LoadingStatus = false
+            state.errorBoxStatus = false
+        });
+        builder.addCase(fetchDeleteMService.rejected, (state, action) => {
+            state.errorBoxStatus = true
+            state.LoadingStatus = false
+            state.errorBoxText = action.error.message        || 'An unknown error occurred'
+        });
+
+
 }})
 
 export const useErrorBoxStatus = () => useSelector((state: RootState) => state.data.errorBoxStatus);

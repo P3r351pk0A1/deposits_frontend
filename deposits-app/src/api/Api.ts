@@ -77,6 +77,18 @@ export interface SingleMiningOrder {
   moderator?: string;
 }
 
+export interface MiningOrdermmfields {
+  /** Company name */
+  company_name?: string | null;
+  /** Location */
+  location?: string | null;
+  /**
+   * Mining start date
+   * @format date-time
+   */
+  mining_start_date?: string | null;
+}
+
 export interface MiningService {
   /** Mining service id */
   mining_service_id?: number;
@@ -361,12 +373,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PUT:/miningOrders/{id}
      * @secure
      */
-    miningOrdersUpdate: (id: string, data: SingleMiningOrder, params: RequestParams = {}) =>
-      this.request<SingleMiningOrder, any>({
+    miningOrdersUpdate: (id: string, data: MiningOrdermmfields, params: RequestParams = {}) =>
+      this.request<MiningOrdermmfields, any>({
         path: `/miningOrders/${id}`,
         method: "PUT",
         body: data,
         secure: true,
+        type: ContentType.Json,
         format: "json",
         ...params,
       }),
@@ -395,13 +408,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PUT:/miningOrders/{id}/forming
      * @secure
      */
-    miningOrdersFormingUpdate: (id: string, data: SingleMiningOrder, params: RequestParams = {}) =>
-      this.request<SingleMiningOrder, any>({
+    miningOrdersFormingUpdate: (id: string, params: RequestParams = {}) =>
+      this.request<void, any>({
         path: `/miningOrders/${id}/forming`,
         method: "PUT",
-        body: data,
         secure: true,
-        format: "json",
         ...params,
       }),
 
@@ -419,6 +430,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         method: "PUT",
         body: data,
         secure: true,
+        type: ContentType.Json,
         format: "json",
         ...params,
       }),
@@ -457,10 +469,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     miningServiceOrderDelete: (pkMservice: string, pkMorder: string, params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<MiningServiceOrder, any>({
         path: `/miningServiceOrder/${pkMservice}/${pkMorder}`,
         method: "DELETE",
         secure: true,
+        format: "json",
         ...params,
       }),
   };

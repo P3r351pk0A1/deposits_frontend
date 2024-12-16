@@ -15,5 +15,5 @@ export const ROUTE_LABELS: {[key in RouteKeyType]: string} = {
     REGISTRATION: 'Регистрация',
     LK: 'Личный кабинет',
     AUTHORISATION: 'Авторизация',
-    MINING_ORDER: 'Заявка'
+    MINING_ORDER: 'Заявки'
   };

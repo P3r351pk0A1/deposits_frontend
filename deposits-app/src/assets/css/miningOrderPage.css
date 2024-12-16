@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap');
+
+.ButtonsBox{
+    display: flex;
+    flex-direction: row;
+    height: 20%;
+    align-content: center;
+    flex-wrap: wrap;
+}
+
+.changeSquareBox{
+    display: block;
+    height: 20%;
+}
