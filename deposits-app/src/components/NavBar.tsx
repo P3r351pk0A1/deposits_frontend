@@ -24,7 +24,6 @@ const NavbarComponent: FC = () => {
     }   
 
     useEffect(() => {
-        // console.log(user)
     }, [user])
 
 

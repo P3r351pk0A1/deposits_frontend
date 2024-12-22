@@ -32,7 +32,6 @@ const MiningServiceInOrderCard: FC<MiningServiceCardProps> = (
     }
 
     const deleteHandler = async () => {
-        console.log(m_order_id, ms_id, ms_name, ms_url, ms_price, ms_square )
         dispatch(fetchDeleteMService({pkMorder: m_order_id, pkMservice: ms_id   }))
     }
 
@@ -50,7 +49,7 @@ const MiningServiceInOrderCard: FC<MiningServiceCardProps> = (
 
                 <div className='d-flex flex-column justify-content-center align-items-center gap-2 me-4'>
                     <div className='d-flex gap-2 changeSquareBox'>
-                        <input style={{width: '5em', textAlign: 'center'}} type='number' value={square} onChange={(event) => {setSquare(Number.parseInt(event.target.value))}} disabled={curOrderId != m_order_id}></input>
+                        <input style={{width: '5em', textAlign: 'center'}} type='number' value={square ?? ''} onChange={(event) => {setSquare(Number.parseInt(event.target.value))}} disabled={curOrderId != m_order_id}></input>
                         <Button style={{width: '10.5em'}} variant="outline-danger" className='details-button' disabled={curOrderId != m_order_id} onClick={editHandler}>Изменить</Button>
                     </div>
                     <Button style={{width: '16em'}} variant="outline-danger" className='details-button' disabled={curOrderId != m_order_id} onClick={deleteHandler}>Удалить</Button>

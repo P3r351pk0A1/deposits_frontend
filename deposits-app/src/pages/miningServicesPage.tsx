@@ -18,6 +18,8 @@ import {ROUTES} from '../modules/Routes'
 
 const MiningServicesPage: FC = () => {
 
+    const dispatch = useDispatch<AppDispatch>();
+
     const miningServisesInCurOrderCount = useminingServisesInCurOrderCount()
     const curOrderId = useCurOrderId()
     const searchValue = useSearchValue()
@@ -28,12 +30,12 @@ const MiningServicesPage: FC = () => {
     }
 
     useEffect(() => {
-        updateMiningServices()
-        return () => {
-        }
-    }, [miningServisesInCurOrderCount])
+        updateMiningServices()                                              
+    }, [])
 
-    const dispatch = useDispatch<AppDispatch>();
+    useEffect(() => {
+        console.log(miningServisesInCurOrderCount)
+    }, [miningServisesInCurOrderCount])
 
     const handleSearch = async () => {
         dispatch(fetchMiningServicesList(searchValue))

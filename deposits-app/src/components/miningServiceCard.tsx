@@ -50,7 +50,7 @@ const MiningServiceCard: FC<miningServiceCardProps> = (
     return (
         <Card className='shadow shadow-bg serviceCard'>
             <Link to={`${ROUTES.MINING_SERVICES}/${mining_service_id}`} className="characterCardLink" style={{ textDecoration: 'none' }}>
-                <Card.Img variant="top" src={url || '/src/assets/img/unknown.jpg'} />
+                <Card.Img className="MServiceCardImg"variant="top" src={url || '/src/assets/img/unknown.jpg'} />
             </Link>
             <Card.Body className='d-flex flex-column'>
                 <Card.Title>{name}</Card.Title>

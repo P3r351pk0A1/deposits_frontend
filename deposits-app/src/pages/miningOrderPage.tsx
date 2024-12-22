@@ -36,6 +36,12 @@ const MiningOrderPage: FC = () => {
 
     useEffect(() => {
         getMiningOrderData()
+        set_company_name_(mining_order.company_name ?? '')
+        set_location_(mining_order.location ?? '')
+        set_mining_start_date_(mining_order.mining_start_date ?? '')
+    }, [])
+
+    useEffect(() => {
     }, [MServicesInCurOrder])
 
     const getStatusTranslated = (status_eng:string) => {
@@ -98,7 +104,7 @@ const MiningOrderPage: FC = () => {
             ]}></BreadCrumbs>
             <div className='d-flex flex-column ms-4 content-fluid'>
             <div className='container-fluid d-flex flex-column justify-content-center shadow-bg p-4 w-100 gap-3'>
-                <h1 className='text-uppercase'>Заявка №{mining_order?.mining_order_id}</h1>
+                {/* <h1 className='text-uppercase'>Заявка №{mining_order?.mining_order_id}</h1> */}
                 <div hidden={cur_mining_order_id != mining_order?.mining_order_id}>
                     <div className='action-container d-flex flex-column gap-2'>
                         <Form className='shadow-bg'>
@@ -113,13 +119,17 @@ const MiningOrderPage: FC = () => {
                                 </div>
                                 <Form.Label>Желаемая дата начала работ</Form.Label>
                                 <div className='d-flex gap-3'>
-                                    <Form.Control value={mining_start_date_ ?? ''}  onChange={(event) => {set_mining_start_date_(event.target.value)}}type='text'></Form.Control>
+                                    <Form.Control 
+                                        // type="date" 
+                                        value={mining_start_date_.substring(0, 10) ?? ''}  
+                                        onChange={(event) => {set_mining_start_date_(event.target.value)}}
+                                    />
                                     <Button variant='outline-danger' onClick={handleSaveMiningOrderFields}>Сохранить изменения</Button>
                                 </div>
                             </Form.Group>
                         </Form>
                         <Button variant='outline-danger' className='big-button' onClick={handleForm}>Оформить</Button>
-                        <Button variant='outline-danger' className='big-button' onClick={handleDelete}>Отменить</Button>
+                        <Button variant='outline-danger' className='big-button' onClick={handleDelete}>Удалить</Button>
                     </div>
                 </div>
                 <div hidden={cur_mining_order_id != mining_order?.mining_order_id}>
@@ -141,15 +151,15 @@ const MiningOrderPage: FC = () => {
                                 </tr>
                                 <tr>
                                     <td>Дата создания</td>
-                                    <td>{mining_order?.creation_date}</td>
+                                    <td>{mining_order?.creation_date && !isNaN(Date.parse(mining_order.creation_date)) ? new Date(mining_order.creation_date).toLocaleString('ru-RU', { dateStyle: 'short', timeStyle: 'short' }) : ''}</td>
                                 </tr>
                                 <tr>
                                     <td>Дата формирования</td>
-                                    <td>{mining_order?.formation_date}</td>
+                                    <td>{mining_order?.formation_date && !isNaN(Date.parse(mining_order.formation_date)) ? new Date(mining_order.formation_date).toLocaleString('ru-RU', { dateStyle: 'short', timeStyle: 'short' }) : ''}</td>
                                 </tr>
                                 <tr>
                                     <td>Дата завершения</td>
-                                    <td>{mining_order?.moderation_date}</td>
+                                    <td>{mining_order?.moderation_date && !isNaN(Date.parse(mining_order.moderation_date)) ? new Date(mining_order.moderation_date).toLocaleString('ru-RU', { dateStyle: 'short', timeStyle: 'short' }) : ''}</td>
                                 </tr>
                                 <tr>
                                     <td>Сумма заказа</td>
@@ -163,7 +173,8 @@ const MiningOrderPage: FC = () => {
                     <div className='d-flex flex-column gap-3 w-100 mt-3 me-4'>
                         <h3>Услуги по разработке месторождений</h3>
                         {mining_order?.mining_services_in_order?.map((MiningService, index) => {
-                            if (MiningService.Mservice?.mining_service_id != null && MiningService.Mservice.url != null)
+                            if (mining_order){}
+                            if (MiningService.Mservice?.mining_service_id != null && MiningService.Mservice.url != null)                                    
                                 return <MiningServiceInOrderCard 
                                     key = {`${MiningService.Mservice.mining_service_id}-${index}`}
                                     m_order_id={mining_order.mining_order_id as number}

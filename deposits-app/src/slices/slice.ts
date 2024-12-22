@@ -374,8 +374,16 @@ const dataSlice = createSlice({
         builder.addCase(fetchChangeMServiceSquare.pending, (state) => {
             state.LoadingStatus = true
         });
-        builder.addCase(fetchChangeMServiceSquare.fulfilled, (state) => {
-
+        builder.addCase(fetchChangeMServiceSquare.fulfilled, (state, action) => {
+            const updatedService = state.MServicesInCurOrder.find((item) => item.mining_service === action.meta.arg.pkMservice);
+            if (updatedService) {
+                updatedService.square = action.meta.arg.square;
+            }
+            const updateddService = state.miningOrder.mining_services_in_order?.find((item) => item.Mservice === action.meta.arg.pkMservice);
+            if (updateddService) {
+                updateddService.square = action.meta.arg.square;
+            }
+            console.log(updateddService)
             state.LoadingStatus = false
             state.errorBoxStatus = false
         });
@@ -389,7 +397,12 @@ const dataSlice = createSlice({
             state.LoadingStatus = true
         });
         builder.addCase(fetchDeleteMService.fulfilled, (state, action) => {
-            state.MServicesInCurOrder = state.MServicesInCurOrder.filter((item) => item.mining_service !== action.meta.arg.pkMservice)
+            if (state.MServicesInCurOrder) {
+                state.MServicesInCurOrder = state.MServicesInCurOrder.filter((item) => item.mining_service !== action.meta.arg.pkMservice)
+            }
+            if (state.miningOrder.mining_services_in_order) {
+                state.miningOrder.mining_services_in_order = state.miningOrder.mining_services_in_order.filter((item) => item.Mservice?.mining_service_id !== action.meta.arg.pkMservice)
+            }
             state.LoadingStatus = false
             state.errorBoxStatus = false
         });
