@@ -137,6 +137,24 @@ export interface MiningOrdermmfields {
   mining_start_date?: string | null;
 }
 
+export interface AttributeRequest {
+  /**
+   * Attribute name
+   * @minLength 1
+   */
+  attribute_name: string;
+  /**
+   * Attribute value
+   * @minLength 1
+   */
+  attribute_value: string;
+  /**
+   * Service id
+   * @minLength 1
+   */
+  service_id: string;
+}
+
 export interface MiningService {
   /** Mining service id */
   mining_service_id?: number;
@@ -188,6 +206,26 @@ export interface MiningServicesListResponse {
   services: MiningService[];
   active_m_order: ActiveMOrder;
   MServicesInCurOrder: LinkServiceOrder[];
+}
+
+export interface AttributesServicesMm {
+  /**
+   * Attribute name
+   * @minLength 1
+   */
+  attribute_name?: string;
+  /** Service id */
+  service_id?: number;
+  /**
+   * Value
+   * @minLength 1
+   */
+  value?: string;
+}
+
+export interface MiningServiceResponse {
+  mining_service: MiningService;
+  attributes: AttributesServicesMm[];
 }
 
 export interface User {
@@ -484,6 +522,61 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         ...params,
       }),
   };
+  miningServiceAttrubute = {
+    /**
+     * No description
+     *
+     * @tags miningServiceAttrubute
+     * @name MiningServiceAttrubuteCreate
+     * @request POST:/miningServiceAttrubute
+     * @secure
+     */
+    miningServiceAttrubuteCreate: (data: AttributeRequest, params: RequestParams = {}) =>
+      this.request<AttributeRequest, any>({
+        path: `/miningServiceAttrubute`,
+        method: "POST",
+        body: data,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags miningServiceAttrubute
+     * @name MiningServiceAttrubuteUpdate
+     * @request PUT:/miningServiceAttrubute
+     * @secure
+     */
+    miningServiceAttrubuteUpdate: (data: AttributeRequest, params: RequestParams = {}) =>
+      this.request<AttributeRequest, any>({
+        path: `/miningServiceAttrubute`,
+        method: "PUT",
+        body: data,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags miningServiceAttrubute
+     * @name MiningServiceAttrubuteDelete
+     * @request DELETE:/miningServiceAttrubute
+     * @secure
+     */
+    miningServiceAttrubuteDelete: (data: AttributeRequest, params: RequestParams = {}) =>
+      this.request<AttributeRequest, any>({
+        path: `/miningServiceAttrubute`,
+        method: "DELETE",
+        body: data,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+  };
   miningServiceOrder = {
     /**
      * No description
@@ -578,10 +671,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     miningServicesRead: (id: string, params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<MiningServiceResponse, any>({
         path: `/miningServices/${id}`,
         method: "GET",
         secure: true,
+        format: "json",
         ...params,
       }),
 

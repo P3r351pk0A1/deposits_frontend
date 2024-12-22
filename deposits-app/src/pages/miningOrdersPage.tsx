@@ -48,8 +48,6 @@ const MiningOrdersPage: FC = () => {
             <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <Row xs={1} className="g-4 justify-content-center" style={{ width: '90%' }}>
                     {Array.isArray(miningOrders) && miningOrders.length === 0 ? <h5>Заявки не найдены</h5> : Array.isArray(miningOrders) && miningOrders.map((miningOrder, index) => {
-                        if (miningOrder.creator != user?.username)
-                            return
                         return (
                             <MiningOrderCard 
                                 key={index}

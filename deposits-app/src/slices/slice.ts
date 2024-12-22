@@ -190,6 +190,19 @@ export const fetchGetminingOrdersList = createAsyncThunk(
     }
 )
 
+export const fetchGetMiningService = createAsyncThunk(
+    'data/fetchGetMiningService',
+    async (id: number) => {
+        try{
+            const response = await api.miningServices.miningServicesRead(id.toString())
+            return response.data
+        }
+        catch(error: any){
+            throw new Error(error.response.data.status)
+        }
+    }
+)
+
 interface DataState {
     mining_services: MiningService[];
     MServicesInCurOrder: LinkServiceOrder[];
@@ -202,6 +215,7 @@ interface DataState {
     user: User;
     miningOrder: SingleMiningOrder;
     miningOrdersList: MiningOrdersListResponse;
+    miningService: MiningService;
 }
 
 const initialState: DataState = {
@@ -215,7 +229,8 @@ const initialState: DataState = {
     searchValue: '',
     user: {} as User,
     miningOrder: {} as SingleMiningOrder,
-    miningOrdersList: {} as MiningOrdersListResponse
+    miningOrdersList: {} as MiningOrdersListResponse,
+    miningService: {} as MiningService,
 }
 
 const dataSlice = createSlice({
@@ -441,6 +456,20 @@ const dataSlice = createSlice({
             state.errorBoxText = action.error.message        || 'An unknown error occurred'
         });
 
+        builder.addCase(fetchGetMiningService.pending, (state) => {
+            state.LoadingStatus = true
+        });
+        builder.addCase(fetchGetMiningService.fulfilled, (state, action) => {
+            state.miningService = action.payload.mining_service
+            state.LoadingStatus = false
+            state.errorBoxStatus = false
+        });
+        builder.addCase(fetchGetMiningService.rejected, (state, action) => {
+            state.errorBoxStatus = true
+            state.LoadingStatus = false
+            state.errorBoxText = action.error.message        || 'An unknown error occurred'
+        });
+
 }})
 
 export const useErrorBoxStatus = () => useSelector((state: RootState) => state.data.errorBoxStatus);
@@ -454,6 +483,7 @@ export const useSearchValue = () => useSelector((state: RootState) => state.data
 export const useMiningServices = () => useSelector((state: RootState) => state.data.mining_services);
 export const useMiningOrder = () => useSelector((state: RootState) => state.data.miningOrder);
 export const useMiningOrdersList = () => useSelector((state: RootState) => state.data.miningOrdersList);
+export const useMiningService = () => useSelector((state: RootState) => state.data.miningService);
 
 // mining_services: MiningService[];
 // MServicesInCurOrder: LinkServiceOrder[];
