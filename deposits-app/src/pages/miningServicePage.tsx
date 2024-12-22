@@ -8,6 +8,8 @@ import { BreadCrumbs } from '../components/BreadCrumbs'
 import NavbarComponent  from '../components/NavBar'
 import '../assets/css/miningServicePage.css'
 
+import { dest_img } from '../../target_config'
+
 const MiningServicePage: FC = () => {
 
     const [mining_service, setMiningService] = useState<MiningServicesInfo>({
@@ -31,13 +33,13 @@ const MiningServicePage: FC = () => {
             setMiningService(response)
         }).catch(() => {
             let found = false;
-                MINING_SERVICES_MOCK.Services.forEach((m_service) => {
+                MINING_SERVICES_MOCK.services.forEach((m_service) => {
                     if (m_service.mining_service_id === id_numeric)
                         found = true;
                         return setMiningService(m_service)
                 })
                 if (!found)
-                    setMiningService(MINING_SERVICES_MOCK.Services[0])
+                    setMiningService(MINING_SERVICES_MOCK.services[0])
             })
     }, [])
 
@@ -58,7 +60,7 @@ const MiningServicePage: FC = () => {
                <h2 className='text-uppercase'>{mining_service?.name}</h2>
                <div className='service-details container-fluid mt-3'>
                     <div className='service-img-box '>
-                        <img src={('http://192.168.1.20:9000' + mining_service?.url)} className='service-img' alt='service'></img>
+                        <img src={(dest_img + mining_service?.url)} className='service-img' alt='service'></img>
                     </div>
                     <div className='mservice-long-descr mt-2'>
                         <p>{mining_service?.long_description}</p>

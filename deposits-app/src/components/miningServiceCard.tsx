@@ -4,6 +4,7 @@ import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../modules/Routes';
 import "../assets/css/miningServiceCard.css";
+import { dest_img } from '../../target_config';
 
 interface miningServiceCardProps {
     mining_service_id: number
@@ -19,7 +20,7 @@ const MiningServiceCard: FC<miningServiceCardProps> = (
     return (
         <Link to={`${ROUTES.MINING_SERVICES}/${mining_service_id}`} className="MServiceCardLink" style={{ textDecoration: 'none' }}>
         <Card className='shadow shadow-bg serviceCard'>
-            <Card.Img variant="top" src={('http://192.168.1.20:9000' + url) || '/src/assets/img/unknown.jpg'} />
+            <Card.Img variant="top" src={(dest_img + url) || '/src/assets/img/unknown.jpg'} />
             <Card.Body className='d-flex flex-column'>
                 <Card.Title>{name}</Card.Title>
                 <Card.Title>{price} руб.</Card.Title>

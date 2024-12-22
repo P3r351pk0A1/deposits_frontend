@@ -20,11 +20,12 @@ const MiningServicesPage: FC = () => {
     const updateMiningServices = () => {
         setLoading(true)
         getMiningServicesByName(searchMiningService).then((response) => {
-            setMiningServices(response.Services)
+            setMiningServices(response.services)
             setLoading(false)
-        }).catch(() => {
+        }).catch((error) => {
+            console.error('Error fetching mining services:', error);
             let mining_servicess: MiningServicesInfo[] = []
-            MINING_SERVICES_MOCK.Services.forEach((m_service) => {
+            MINING_SERVICES_MOCK.services.forEach((m_service) => {
                 if (m_service.name.includes(searchMiningService))
                     mining_servicess.push(m_service)
             })
@@ -32,6 +33,19 @@ const MiningServicesPage: FC = () => {
             setLoading(false)
         })
     }
+
+    // const updateMiningServices = () => {
+    //     setLoading(true)
+    //         console.error('Error fetching mining services:');
+    //         let mining_servicess: MiningServicesInfo[] = []
+    //         MINING_SERVICES_MOCK.services.forEach((m_service) => {
+    //             if (m_service.name.includes(searchMiningService))
+    //                 mining_servicess.push(m_service)
+    //         })
+    //         setMiningServices(mining_servicess)
+    //         setLoading(false)
+        
+    // }
 
     useEffect(() => {
         updateMiningServices()
@@ -55,11 +69,13 @@ const MiningServicesPage: FC = () => {
                         placeholder="Поиск горных работ" 
                     />
                             <Container className="d-flex flex-wrap container-fluid g-4 justify-content-center w-100 gap-4 mt-5" >
-                                    {mining_services.map((service, index) => (
+                                    {mining_services !== undefined && mining_services.length > 0 ? mining_services.map((service, index) => (
                                         <div key={`${service.id}-${index}`} className="flex-shrink-0" style={{ height: '400px', minWidth: '250px', maxWidth: '250px', margin: '0 10px' }}>
                                             <MiningServiceCard {...service} />
                                         </div>
-                                    ))}
+                                    )) : (
+                                        <div>No mining services found.</div>
+                                    )}
                                 <div style={{ width: '100%', height: '50px', backgroundColor: 'white', marginTop: '-50px' }}></div>
                             </Container>
         </>
