@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { useSelector } from "react-redux"
 import { RootState } from "../store"
 import { api} from '../api'
-import {User, MiningService, LinkServiceOrder, SingleMiningOrder} from '../api/Api'
+import {User, MiningService, LinkServiceOrder, SingleMiningOrder, MiningOrdersSerialiser, MiningOrdersListResponse} from '../api/Api'
 import { MINING_SERVICES_MOCK } from '../modules/mock';
 
 export const fetchReg = createAsyncThunk(
@@ -177,6 +177,19 @@ export const fetchDeleteMService = createAsyncThunk(
     }
 )
 
+export const fetchGetminingOrdersList = createAsyncThunk(
+    'data/fetcminingOrdersList',
+    async () => {
+        try{
+            const response = await api.miningOrders.miningOrdersList()
+            return response.data
+        }
+        catch(error: any) {
+            throw new Error(error.response.data.status)
+        }
+    }
+)
+
 interface DataState {
     mining_services: MiningService[];
     MServicesInCurOrder: LinkServiceOrder[];
@@ -188,6 +201,7 @@ interface DataState {
     searchValue: string;
     user: User;
     miningOrder: SingleMiningOrder;
+    miningOrdersList: MiningOrdersListResponse;
 }
 
 const initialState: DataState = {
@@ -201,6 +215,7 @@ const initialState: DataState = {
     searchValue: '',
     user: {} as User,
     miningOrder: {} as SingleMiningOrder,
+    miningOrdersList: {} as MiningOrdersListResponse
 }
 
 const dataSlice = createSlice({
@@ -294,6 +309,7 @@ const dataSlice = createSlice({
         });
         builder.addCase(fetchAddMiningServiceToOrder.fulfilled, (state, action) => {
             state.miningServisesInCurOrderCount = action.payload.MiningServicesInUsersDraft
+            state.curOrderId = action.payload.UsersDraftId
             state.LoadingStatus = false
             state.errorBoxStatus = false
         });
@@ -383,7 +399,6 @@ const dataSlice = createSlice({
             if (updateddService) {
                 updateddService.square = action.meta.arg.square;
             }
-            console.log(updateddService)
             state.LoadingStatus = false
             state.errorBoxStatus = false
         });
@@ -412,6 +427,19 @@ const dataSlice = createSlice({
             state.errorBoxText = action.error.message        || 'An unknown error occurred'
         });
 
+        builder.addCase(fetchGetminingOrdersList.pending, (state) => {
+            state.LoadingStatus = true
+        });
+        builder.addCase(fetchGetminingOrdersList.fulfilled, (state, action) => {
+            state.miningOrdersList = action.payload
+            state.LoadingStatus = false
+            state.errorBoxStatus = false
+        });
+        builder.addCase(fetchGetminingOrdersList.rejected, (state, action) => {
+            state.errorBoxStatus = true
+            state.LoadingStatus = false
+            state.errorBoxText = action.error.message        || 'An unknown error occurred'
+        });
 
 }})
 
@@ -425,6 +453,7 @@ export const useminingServisesInCurOrderCount = () => useSelector((state: RootSt
 export const useSearchValue = () => useSelector((state: RootState) => state.data.searchValue);
 export const useMiningServices = () => useSelector((state: RootState) => state.data.mining_services);
 export const useMiningOrder = () => useSelector((state: RootState) => state.data.miningOrder);
+export const useMiningOrdersList = () => useSelector((state: RootState) => state.data.miningOrdersList);
 
 // mining_services: MiningService[];
 // MServicesInCurOrder: LinkServiceOrder[];

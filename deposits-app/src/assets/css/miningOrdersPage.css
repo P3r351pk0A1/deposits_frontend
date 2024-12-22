@@ -1,0 +1,68 @@
+.cardWrapper{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap ;
+    gap: 20px;
+    border: 1px solid black;
+    border-radius: 15px;
+    padding-left: 1%;
+    padding-right: 1%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    background-color: #f6f4f2;
+}
+
+.cardWrapper:hover{
+    border-color: #C14623;
+    cursor: pointer;
+}
+
+.field{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    min-width: 140px;
+}
+
+.fieldName{
+    font-weight: 700;
+    margin-right: 10px;
+}
+
+.idField{
+    max-width: 30px;
+}
+
+.field{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.fieldStat{
+    width: 180px;
+}
+
+.fieldClient{
+    width: 160px;
+}
+
+.fieldOp{
+    width: 160px;
+}
+
+.fieldDateC{
+    width: 240px;
+}
+
+.fieldDateF{
+    width: 300px;
+}
+
+.fieldDateE{
+    width: 270px;
+}
+
+.fieldOC{
+    width: 220px;
+}

@@ -36,10 +36,13 @@ const MiningOrderPage: FC = () => {
 
     useEffect(() => {
         getMiningOrderData()
+    }, [id])
+
+    useEffect(() => {
         set_company_name_(mining_order.company_name ?? '')
         set_location_(mining_order.location ?? '')
         set_mining_start_date_(mining_order.mining_start_date ?? '')
-    }, [])
+    }, [mining_order])
 
     useEffect(() => {
     }, [MServicesInCurOrder])
@@ -105,17 +108,17 @@ const MiningOrderPage: FC = () => {
             <div className='d-flex flex-column ms-4 content-fluid'>
             <div className='container-fluid d-flex flex-column justify-content-center shadow-bg p-4 w-100 gap-3'>
                 {/* <h1 className='text-uppercase'>Заявка №{mining_order?.mining_order_id}</h1> */}
-                <div hidden={cur_mining_order_id != mining_order?.mining_order_id}>
+                <div >
                     <div className='action-container d-flex flex-column gap-2'>
                         <Form className='shadow-bg'>
                             <Form.Group>
                                 <Form.Label>Название компании</Form.Label>
                                 <div className='d-flex gap-3'>
-                                    <Form.Control value={company_name_ ?? ''} onChange={(event) => {set_company_name_(event.target.value)}} type='text'></Form.Control>
+                                    <Form.Control value={company_name_ ?? ''} onChange={(event) => {set_company_name_(event.target.value)}} type='text' disabled={cur_mining_order_id != mining_order?.mining_order_id}></Form.Control>
                                 </div>
                                 <Form.Label>Место проведения работ</Form.Label>
                                 <div className='d-flex gap-3'>
-                                    <Form.Control value={location_ ?? ''}  onChange={(event) => {set_location_(event.target.value)}}type='text'></Form.Control>
+                                    <Form.Control value={location_ ?? ''}  onChange={(event) => {set_location_(event.target.value)}}type='text' disabled={cur_mining_order_id != mining_order?.mining_order_id}></Form.Control>
                                 </div>
                                 <Form.Label>Желаемая дата начала работ</Form.Label>
                                 <div className='d-flex gap-3'>
@@ -123,16 +126,17 @@ const MiningOrderPage: FC = () => {
                                         // type="date" 
                                         value={mining_start_date_.substring(0, 10) ?? ''}  
                                         onChange={(event) => {set_mining_start_date_(event.target.value)}}
+                                        disabled={cur_mining_order_id != mining_order?.mining_order_id}
                                     />
-                                    <Button variant='outline-danger' onClick={handleSaveMiningOrderFields}>Сохранить изменения</Button>
+                                    <Button variant='outline-danger' onClick={handleSaveMiningOrderFields} hidden={cur_mining_order_id != mining_order?.mining_order_id}>Сохранить изменения</Button>
                                 </div>
                             </Form.Group>
                         </Form>
-                        <Button variant='outline-danger' className='big-button' onClick={handleForm}>Оформить</Button>
-                        <Button variant='outline-danger' className='big-button' onClick={handleDelete}>Удалить</Button>
+                        <Button variant='outline-danger' className='big-button' onClick={handleForm} hidden={cur_mining_order_id !== mining_order?.mining_order_id}>Оформить</Button>
+                        <Button variant='outline-danger' className='big-button' onClick={handleDelete} hidden={cur_mining_order_id !== mining_order?.mining_order_id}>Удалить</Button>
                     </div>
                 </div>
-                <div hidden={cur_mining_order_id != mining_order?.mining_order_id}>
+                <div>
                     <div className='d-flex flex-column w-50' >
                         <h3>Дополнительная информация</h3>
                         <Table className='shadow shadow-bg border'>

@@ -9,6 +9,54 @@
  * ---------------------------------------------------------------
  */
 
+export interface MiningOrdersSerialiser {
+  /** Mining order id */
+  mining_order_id?: number;
+  /**
+   * Status
+   * @minLength 1
+   */
+  status: string;
+  /**
+   * Creation date
+   * @format date-time
+   */
+  creation_date?: string;
+  /**
+   * Formation date
+   * @format date-time
+   */
+  formation_date?: string | null;
+  /**
+   * Moderation date
+   * @format date-time
+   */
+  moderation_date?: string | null;
+  /** Company name */
+  company_name?: string | null;
+  /** Location */
+  location?: string | null;
+  /**
+   * Mining start date
+   * @format date-time
+   */
+  mining_start_date?: string | null;
+  /** Creator */
+  creator?: string;
+  /** Moderator */
+  moderator?: string;
+  /**
+   * Order cost
+   * @min -2147483648
+   * @max 2147483647
+   */
+  order_cost?: number | null;
+}
+
+export interface MiningOrdersListResponse {
+  mining_orders: MiningOrdersSerialiser[];
+}
+
 export interface MiningServiceSerializerInserted {
   /** Mining service id */
   mining_service_id?: number;
@@ -341,10 +389,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     miningOrdersList: (params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<MiningOrdersListResponse, any>({
         path: `/miningOrders`,
         method: "GET",
         secure: true,
+        format: "json",
         ...params,
       }),
 

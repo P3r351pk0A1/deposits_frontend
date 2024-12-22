@@ -34,7 +34,6 @@ const MiningServicesPage: FC = () => {
     }, [])
 
     useEffect(() => {
-        console.log(miningServisesInCurOrderCount)
     }, [miningServisesInCurOrderCount])
 
     const handleSearch = async () => {

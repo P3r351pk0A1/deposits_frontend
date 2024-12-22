@@ -8,6 +8,7 @@ import RegistrationPage from './pages/registrationPage'
 import LKPage from './pages/LKPage'
 import AuthorizationPage from './pages/authorizationPage'
 import MiningOrderPage from './pages/miningOrderPage'
+import MiningOrdersPage from './pages/miningOrdersPage'
 
 function App() {
   // const [searchState, searchDispatch] = useReducer(searchReducer, initialState);
@@ -23,6 +24,7 @@ function App() {
         <Route path={ROUTES.REGISTRATION} element={<RegistrationPage />} />
         <Route path={ROUTES.LK} element={<LKPage/>} />
         <Route path={ROUTES.AUTHORISATION} element={<AuthorizationPage/>} />
+        <Route path={ROUTES.MINING_ORDER} element={<MiningOrdersPage/>} />
       </Routes>
     </BrowserRouter>
     // </SearchContext.Provider>

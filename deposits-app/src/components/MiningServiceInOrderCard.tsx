@@ -46,14 +46,19 @@ const MiningServiceInOrderCard: FC<MiningServiceCardProps> = (
             <div className='d-flex w-75 justify-content-center align-items-center text-center text-uppercase'>
                 <h3>{ms_price} рублей</h3>
             </div>
-
-                <div className='d-flex flex-column justify-content-center align-items-center gap-2 me-4'>
+            <div className='d-flex w-75 justify-content-center align-items-center text-center text-uppercase'>
+                <h3 style={{ marginRight: '1em' }}>Площадь: </h3>   
+            <div className='d-flex flex-column justify-content-center align-items-center gap-2 me-4'>
                     <div className='d-flex gap-2 changeSquareBox'>
-                        <input style={{width: '5em', textAlign: 'center'}} type='number' value={square ?? ''} onChange={(event) => {setSquare(Number.parseInt(event.target.value))}} disabled={curOrderId != m_order_id}></input>
+                        <input style={{width: '5em', textAlign: 'center', fontSize: '1.2em'}} type='number' value={square ?? ''} onChange={(event) => {setSquare(Number.parseInt(event.target.value))}} disabled={curOrderId != m_order_id}></input>
                         <Button style={{width: '10.5em'}} variant="outline-danger" className='details-button' disabled={curOrderId != m_order_id} onClick={editHandler}>Изменить</Button>
                     </div>
                     <Button style={{width: '16em'}} variant="outline-danger" className='details-button' disabled={curOrderId != m_order_id} onClick={deleteHandler}>Удалить</Button>
                 </div>
+
+            </div>
+
+
             </div>
     )
 }
