@@ -148,11 +148,8 @@ export interface AttributeRequest {
    * @minLength 1
    */
   attribute_value: string;
-  /**
-   * Service id
-   * @minLength 1
-   */
-  service_id: string;
+  /** Service id */
+  service_id: number;
 }
 
 export interface MiningService {

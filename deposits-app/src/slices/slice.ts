@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { useSelector } from "react-redux"
 import { RootState } from "../store"
 import { api} from '../api'
-import {User, MiningService, LinkServiceOrder, SingleMiningOrder, MiningOrdersSerialiser, MiningOrdersListResponse} from '../api/Api'
+import {User, MiningService, LinkServiceOrder, SingleMiningOrder, MiningServiceResponse, MiningOrdersListResponse} from '../api/Api'
 import { MINING_SERVICES_MOCK } from '../modules/mock';
 
 export const fetchReg = createAsyncThunk(
@@ -203,6 +203,57 @@ export const fetchGetMiningService = createAsyncThunk(
     }
 )
 
+export const fetchAddAtribute = createAsyncThunk(
+    'data/fetchAddAtribute',
+    async ({name, value, service_id}:{name: string, value: string, service_id: number}) => {
+        try{
+            const response = await api.miningServiceAttrubute.miningServiceAttrubuteCreate({
+                attribute_name: name,
+                attribute_value: value,
+                service_id: service_id
+            })
+            return response.data
+        }
+        catch(error: any){
+            throw new Error(error.response.data.status)
+        }
+    }
+)
+
+export const fetchChangeAtribute = createAsyncThunk(
+    'data/fetchChangeAtribute',
+    async ({name, value, service_id}:{name: string, value: string, service_id: number}) => {
+        try{
+            const response = await api.miningServiceAttrubute.miningServiceAttrubuteUpdate({
+                attribute_name: name,
+                attribute_value: value,
+                service_id: service_id
+            })
+            return response.data
+        }
+        catch(error: any){
+            throw new Error(error.response.data.status)
+        }
+    }
+)
+
+export const fetchDeleteAtribute = createAsyncThunk(
+    'data/fetchDeleteAtribute',
+    async ({name, value, service_id}:{name: string, value: string, service_id: number}) => {
+        try{
+            const response = await api.miningServiceAttrubute.miningServiceAttrubuteDelete({
+                attribute_name: name,
+                attribute_value: value,
+                service_id: service_id
+            })
+            return response.data
+        }
+        catch(error: any){
+            throw new Error(error.response.data.status)
+        }
+    }
+)
+
 interface DataState {
     mining_services: MiningService[];
     MServicesInCurOrder: LinkServiceOrder[];
@@ -215,7 +266,7 @@ interface DataState {
     user: User;
     miningOrder: SingleMiningOrder;
     miningOrdersList: MiningOrdersListResponse;
-    miningService: MiningService;
+    miningServiceWithAttr: MiningServiceResponse;
 }
 
 const initialState: DataState = {
@@ -230,7 +281,7 @@ const initialState: DataState = {
     user: {} as User,
     miningOrder: {} as SingleMiningOrder,
     miningOrdersList: {} as MiningOrdersListResponse,
-    miningService: {} as MiningService,
+    miningServiceWithAttr: {} as MiningServiceResponse,
 }
 
 const dataSlice = createSlice({
@@ -460,7 +511,7 @@ const dataSlice = createSlice({
             state.LoadingStatus = true
         });
         builder.addCase(fetchGetMiningService.fulfilled, (state, action) => {
-            state.miningService = action.payload.mining_service
+            state.miningServiceWithAttr = action.payload
             state.LoadingStatus = false
             state.errorBoxStatus = false
         });
@@ -468,6 +519,57 @@ const dataSlice = createSlice({
             state.errorBoxStatus = true
             state.LoadingStatus = false
             state.errorBoxText = action.error.message        || 'An unknown error occurred'
+        });
+
+        builder.addCase(fetchAddAtribute.pending, (state) => {
+            state.LoadingStatus = true
+        });
+        builder.addCase(fetchAddAtribute.fulfilled, (state, action) => {   
+            if (action.payload.attribute_name !== undefined){
+                state.miningServiceWithAttr.attributes.push({
+                    attribute_name: action.payload.attribute_name,
+                    value: action.payload.attribute_value,
+                    service_id: action.payload.service_id
+            })};
+            state.LoadingStatus = false
+            state.errorBoxStatus = false
+        });
+        builder.addCase(fetchAddAtribute.rejected, (state, action) => {
+            state.errorBoxStatus = true
+            state.LoadingStatus = false
+            state.errorBoxText = action.error.message || 'Already exists'
+        });
+
+        builder.addCase(fetchChangeAtribute.pending, (state) => {
+            state.LoadingStatus = true
+        });
+        builder.addCase(fetchChangeAtribute.fulfilled, (state, action) => {
+            const updatedAttribute = state.miningServiceWithAttr.attributes.find(attr => attr.service_id === action.meta.arg.service_id && attr.attribute_name === action.meta.arg.name);     
+            if (updatedAttribute !== undefined){
+                updatedAttribute.attribute_name = action.payload.attribute_name;
+                updatedAttribute.value = action.payload.attribute_value;};
+            state.LoadingStatus = false
+            state.errorBoxStatus = false
+        });
+        builder.addCase(fetchChangeAtribute.rejected, (state, action) => {
+            state.errorBoxStatus = true
+            state.LoadingStatus = false
+            state.errorBoxText = action.error.message || 'Un unknown error occurred'
+        });
+
+        builder.addCase(fetchDeleteAtribute.pending, (state) => {
+            state.LoadingStatus = true
+        });
+        builder.addCase(fetchDeleteAtribute.fulfilled, (state, action) => {
+            if (action.meta.arg.name !== undefined){
+                state.miningServiceWithAttr.attributes = state.miningServiceWithAttr.attributes.filter(attr => attr.attribute_name !== action.meta.arg.name || attr.service_id !== action.meta.arg.service_id)} 
+            state.LoadingStatus = false
+            state.errorBoxStatus = false
+        });
+        builder.addCase(fetchDeleteAtribute.rejected, (state, action) => {
+            state.errorBoxStatus = true
+            state.LoadingStatus = false
+            state.errorBoxText = action.error.message || 'Un unknown error occurred'
         });
 
 }})
@@ -483,20 +585,7 @@ export const useSearchValue = () => useSelector((state: RootState) => state.data
 export const useMiningServices = () => useSelector((state: RootState) => state.data.mining_services);
 export const useMiningOrder = () => useSelector((state: RootState) => state.data.miningOrder);
 export const useMiningOrdersList = () => useSelector((state: RootState) => state.data.miningOrdersList);
-export const useMiningService = () => useSelector((state: RootState) => state.data.miningService);
-
-// mining_services: MiningService[];
-// MServicesInCurOrder: LinkServiceOrder[];
-// miningServisesInCurOrderCount: number;
-// curOrderId: number | null;
-// LoadingStatus: boolean;
-// errorBoxStatus: boolean;
-// errorBoxText: string;
-// searchValue: string;
-// user: any; // Замените на правильный тип
-
-// const dispatch = useDispatch();
-// const navigate = useNavigate();
+export const useMiningServiceWithAttr = () => useSelector((state: RootState) => state.data.miningServiceWithAttr);
 
 export const {
     setErrorBoxStatus: setErrorBoxStatusAction,
