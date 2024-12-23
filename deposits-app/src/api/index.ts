@@ -1,6 +1,6 @@
 import { Api } from './Api';
 
-const localNetworkIP = '192.168.1.20'
+const localNetworkIP = '192.168.43.190'
 const baseURL = window.location.hostname === 'localhost' 
     ? 'http://localhost:3000/api' 
     : `http://${localNetworkIP}:3000/api`;
