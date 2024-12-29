@@ -152,6 +152,14 @@ export interface AttributeRequest {
   service_id: number;
 }
 
+export interface AttributeResponse {
+  /**
+   * Attribute name
+   * @minLength 1
+   */
+  attribute_name: string;
+}
+
 export interface MiningService {
   /** Mining service id */
   mining_service_id?: number;
@@ -211,8 +219,6 @@ export interface AttributesServicesMm {
    * @minLength 1
    */
   attribute_name?: string;
-  /** Service id */
-  service_id?: number;
   /**
    * Value
    * @minLength 1
@@ -222,7 +228,7 @@ export interface AttributesServicesMm {
 
 export interface MiningServiceResponse {
   mining_service: MiningService;
-  attributes: AttributesServicesMm[];
+  service_attributes: AttributesServicesMm[];
 }
 
 export interface User {
@@ -529,7 +535,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     miningServiceAttrubuteCreate: (data: AttributeRequest, params: RequestParams = {}) =>
-      this.request<AttributeRequest, any>({
+      this.request<AttributeResponse, any>({
         path: `/miningServiceAttrubute`,
         method: "POST",
         body: data,

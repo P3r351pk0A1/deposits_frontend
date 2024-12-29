@@ -389,6 +389,7 @@ const dataSlice = createSlice({
             state.LoadingStatus = true
         });
         builder.addCase(fetchMiningServicesList.fulfilled, (state, action) => {
+
             state.mining_services = action.payload.services
             state.miningServisesInCurOrderCount = action.payload.active_m_order.MiningServicesInUsersDraft
             state.curOrderId = action.payload.active_m_order.UsersDraftId
@@ -508,6 +509,7 @@ const dataSlice = createSlice({
         });
 
         builder.addCase(fetchGetMiningService.pending, (state) => {
+            state.miningServiceWithAttr = initialState.miningServiceWithAttr
             state.LoadingStatus = true
         });
         builder.addCase(fetchGetMiningService.fulfilled, (state, action) => {
@@ -526,10 +528,8 @@ const dataSlice = createSlice({
         });
         builder.addCase(fetchAddAtribute.fulfilled, (state, action) => {   
             if (action.payload.attribute_name !== undefined){
-                state.miningServiceWithAttr.attributes.push({
-                    attribute_name: action.payload.attribute_name,
-                    value: action.payload.attribute_value,
-                    service_id: action.payload.service_id
+                state.miningServiceWithAttr.service_attributes.push({
+                    attribute_name: action.payload.attribute_name
             })};
             state.LoadingStatus = false
             state.errorBoxStatus = false
@@ -544,7 +544,7 @@ const dataSlice = createSlice({
             state.LoadingStatus = true
         });
         builder.addCase(fetchChangeAtribute.fulfilled, (state, action) => {
-            const updatedAttribute = state.miningServiceWithAttr.attributes.find(attr => attr.service_id === action.meta.arg.service_id && attr.attribute_name === action.meta.arg.name);     
+            const updatedAttribute = state.miningServiceWithAttr.service_attributes.find(attr => attr.attribute_name === action.meta.arg.name);     
             if (updatedAttribute !== undefined){
                 updatedAttribute.attribute_name = action.payload.attribute_name;
                 updatedAttribute.value = action.payload.attribute_value;};
@@ -561,8 +561,9 @@ const dataSlice = createSlice({
             state.LoadingStatus = true
         });
         builder.addCase(fetchDeleteAtribute.fulfilled, (state, action) => {
-            if (action.meta.arg.name !== undefined){
-                state.miningServiceWithAttr.attributes = state.miningServiceWithAttr.attributes.filter(attr => attr.attribute_name !== action.meta.arg.name || attr.service_id !== action.meta.arg.service_id)} 
+            const updatedAttribute = state.miningServiceWithAttr.service_attributes.find(attr => attr.attribute_name === action.meta.arg.name);     
+            if (updatedAttribute !== undefined){
+                updatedAttribute.value = '';};
             state.LoadingStatus = false
             state.errorBoxStatus = false
         });

@@ -32,6 +32,7 @@ const AttributeCard: FC<AttributeCardProps> = (
             value: attr_value,
             service_id: serviceId
         }))
+        set_attr_value('')
     }
 
     const handleChange = async () => {
@@ -58,33 +59,39 @@ const AttributeCard: FC<AttributeCardProps> = (
     return (
         <Card className='shadow shadow-bg '>
             <Card.Body className='d-flex flex-column'>
-                <div className="d-flex justify-content-between">
+                <div className="d-flex justify-content ">
                     <input 
                         type="text" 
-                        id="attribute_name" 
+                        id="attr_name" 
                         value={attr_name} 
                         readOnly={user.is_staff !== false || is_last !== true} 
-                        className="form-control mb-2" 
-                        onChange={(e) => set_attr_name(e.target.value)}
+                        className="form-control mb-2 me-2" 
+                        onChange={(event) => {
+                            set_attr_name(event.target.value);
+                        }}
                     />
                     <input 
                         type="text" 
                         id="value" 
                         value={attr_value}  
-                        className="form-control mb-2" 
-                        onChange={(e) => set_attr_value(e.target.value)}
+                        readOnly={user.is_staff !== false} 
+                        hidden={is_last === true} 
+                        className="form-control mb-2 me-2" 
+                        onChange={(event) => set_attr_value(event.target.value)}
                     />
+                    <div className="d-flex justify-content-between" style = {user.is_staff !== false? {maxWidth: '1px'}: {minWidth: '200px'}}>
                     <Button 
                         variant="outline-danger" 
-                        className='add-button w-100 mb-2' 
+                        className='add-button w-100 mb-2 me-2' 
                         hidden={user.is_staff !== false || is_last === true} 
                         onClick={handleDel}
+
                     >
                         Удалить
                     </Button>
                     <Button 
                         variant="outline-danger" 
-                        className='add-button w-100 mb-2' 
+                        className='add-button w-100 mb-2 me-2' 
                         hidden={user.is_staff !== false || is_last === true} 
                         onClick={handleChange}
                     >
@@ -98,6 +105,7 @@ const AttributeCard: FC<AttributeCardProps> = (
                     >
                         Добавить
                     </Button>
+                    </div>
                 </div>
             </Card.Body>
         </Card>

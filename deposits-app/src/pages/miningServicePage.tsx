@@ -28,6 +28,7 @@ const MiningServicePage: FC = () => {
         }
 
         getDetails(id_numeric)
+        console.log(M_service)
     }, [])
 
     useEffect(() => {
@@ -62,7 +63,7 @@ const MiningServicePage: FC = () => {
                     </div>
                 </div>
                 <div className='mt-5'>
-                    {M_service?.attributes?.map((attr, index) => (
+                    {M_service?.service_attributes?.map((attr, index) => (
                         <div key={`${attr.attribute_name}-${index}`} className="flex-shrink-0" style={{ height: '70px', minWidth: '250px', maxWidth: '800px', margin: '0 10px' }}>
                             <AttributeCard 
                                 attribute_name={attr.attribute_name as string}
