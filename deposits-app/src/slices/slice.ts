@@ -207,7 +207,7 @@ export const fetchAddAtribute = createAsyncThunk(
     'data/fetchAddAtribute',
     async ({name, value, service_id}:{name: string, value: string, service_id: number}) => {
         try{
-            const response = await api.miningServiceAttrubute.miningServiceAttrubuteCreate({
+            const response = await api.miningAttrubute.miningAttrubuteCreate({
                 attribute_name: name,
                 attribute_value: value,
                 service_id: service_id
