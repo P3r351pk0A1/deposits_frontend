@@ -9,6 +9,29 @@
  * ---------------------------------------------------------------
  */
 
+export interface AttributeRequest {
+  /**
+   * Attribute name
+   * @minLength 1
+   */
+  attribute_name: string;
+  /**
+   * Attribute value
+   * @minLength 1
+   */
+  attribute_value: string;
+  /** Service id */
+  service_id: number;
+}
+
+export interface AttributeResponse {
+  /**
+   * Attribute name
+   * @minLength 1
+   */
+  attribute_name: string;
+}
+
 export interface MiningOrdersSerialiser {
   /** Mining order id */
   mining_order_id?: number;
@@ -135,29 +158,6 @@ export interface MiningOrdermmfields {
    * @format date-time
    */
   mining_start_date?: string | null;
-}
-
-export interface AttributeRequest {
-  /**
-   * Attribute name
-   * @minLength 1
-   */
-  attribute_name: string;
-  /**
-   * Attribute value
-   * @minLength 1
-   */
-  attribute_value: string;
-  /** Service id */
-  service_id: number;
-}
-
-export interface AttributeResponse {
-  /**
-   * Attribute name
-   * @minLength 1
-   */
-  attribute_name: string;
 }
 
 export interface MiningService {
@@ -420,6 +420,25 @@ export class HttpClient<SecurityDataType = unknown> {
  * Test description
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+  miningAttrubute = {
+    /**
+     * No description
+     *
+     * @tags miningAttrubute
+     * @name MiningAttrubuteCreate
+     * @request POST:/miningAttrubute
+     * @secure
+     */
+    miningAttrubuteCreate: (data: AttributeRequest, params: RequestParams = {}) =>
+      this.request<AttributeResponse, any>({
+        path: `/miningAttrubute`,
+        method: "POST",
+        body: data,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+  };
   miningOrders = {
     /**
      * No description
@@ -526,24 +545,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
   };
   miningServiceAttrubute = {
-    /**
-     * No description
-     *
-     * @tags miningServiceAttrubute
-     * @name MiningServiceAttrubuteCreate
-     * @request POST:/miningServiceAttrubute
-     * @secure
-     */
-    miningServiceAttrubuteCreate: (data: AttributeRequest, params: RequestParams = {}) =>
-      this.request<AttributeResponse, any>({
-        path: `/miningServiceAttrubute`,
-        method: "POST",
-        body: data,
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
     /**
      * No description
      *
